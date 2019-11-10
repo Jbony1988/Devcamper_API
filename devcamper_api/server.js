@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
-
+const errorHnadler = require("./middleware/error");
 const connectDB = require("./config/db");
 
 // load env vars
@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use("/api/v1/bootcamps", bootcamps);
 
+app.use(errorHnadler);
 const PORT = process.env.PORT;
 
 const server = app.listen(
