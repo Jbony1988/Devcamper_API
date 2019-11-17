@@ -51,7 +51,10 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page, 10) || 1;
   const limit = parseInt(req.query.limit, 10) || 25;
 
+  // First index of page
   const startIndex = (page - 1) * limit;
+  // page number multiplied by limit
+  // this is the endindex
   const endIndex = page * limit;
   const total = await Bootcamp.countDocuments();
 
@@ -63,7 +66,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   // Pagination result
   const pagination = {};
 
-  // if last page is greate
+  // if last page results is less than total bootcamps in database then add pagination.next
   if (endIndex < total) {
     pagination.next = {
       page: page + 1,
@@ -71,6 +74,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     };
   }
 
+  // if the first page is greater than o zero than add pagination.prev
   if (startIndex > 0) {
     pagination.prev = {
       page: page - 1
