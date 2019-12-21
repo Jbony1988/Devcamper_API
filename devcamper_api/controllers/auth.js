@@ -1,17 +1,17 @@
 const ErrorResponse = require("../utils/errorResponse");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const asyncHandler = require("../middleware/async");
 const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
-
-// @desc Register user
-// @route POST/api/v1/auth/register
-// @access Public
-
+// @desc      Register user
+// @route     POST /api/v1/auth/register
+// @access    Public
+debugger;
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
 
-  // Create our user
+  // Create user
   const user = await User.create({
     name,
     email,
@@ -22,8 +22,21 @@ exports.register = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// @desc Register user
-// @route POST/api/v1/auth/register
+// @desc Load user
+// @route POST/api/v1/auth/user
+// @access Public
+exports.loadUser = asyncHandler(async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @desc Login user
+// @route POST/api/v1/auth/login
 // @access Public
 
 exports.login = asyncHandler(async (req, res, next) => {
@@ -51,10 +64,9 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// @desc Update user details
-// @route PUT/api/v1/auth/updatedetails
-// @access Private
-
+// @desc      Get current logged in user
+// @route     POST /api/v1/auth/me
+// @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
@@ -198,7 +210,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// Get token from model, create cookie and send response
+// / Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = user.getSignedJwtToken();
@@ -217,5 +229,43 @@ const sendTokenResponse = (user, statusCode, res) => {
   res
     .status(statusCode)
     .cookie("token", token, options)
-    .json({ success: true, token });
+    .json({
+      success: true,
+      token
+    });
 };
+
+// / Get token from model, create cookie and send response
+// const sendTokenResponse = asyncHandler(async (user, statusCode, res) => {
+//   // Create token
+//   const token = user.getSignedJwtToken();
+//   let userInfo = null;
+//   try {
+//     // Verify token
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     console.log(decoded);
+//     userInfo = await User.findById(decoded.id).select("-password");
+//   } catch (err) {
+//     return console.log(err.message);
+//   }
+
+//   const options = {
+//     expires: new Date(
+//       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+//     ),
+//     httpOnly: true
+//   };
+
+//   if (process.env.NODE_ENV === "production") {
+//     options.secure = true;
+//   }
+
+//   res
+//     .status(statusCode)
+//     .cookie("token", token, options)
+//     .json({
+//       success: true,
+//       token,
+//       userInfo
+//     });
+// });

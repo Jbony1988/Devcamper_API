@@ -1,72 +1,140 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
 
-const Register = () => {
+import axios from "axios";
+
+const Register = ({ setAlert, register }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    user: true,
+    publisher: false,
+    password2: ""
+  });
+
+  const { name, email, user, publisher, password, password2, role } = formData;
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (password !== password2) {
+      setAlert("Passwords do not match", "danger");
+    } else {
+      // console.log(formData);
+      const newUser = {
+        name,
+        email,
+        password,
+        role
+      };
+
+      console.log(newUser);
+
+      register(newUser);
+
+      // try {
+      //   const config = {
+      //     headers: {
+      //       "Content-type": "application/json"
+      //     }
+      //   };
+
+      //   const body = JSON.stringify(newUser);
+      //   const res = await axios.post("/api/v1/auth/register", body, config);
+      //   console.log(res.data);
+      // } catch (err) {
+      //   console.error(err.response.data);
+      // }
+    }
+  };
+
   return (
     <Fragment>
-      <section class="form mt-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 m-auto">
-              <div class="card bg-white p-4 mb-4">
-                <div class="card-body">
+      <section className="form mt-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 m-auto">
+              <div className="card bg-white p-4 mb-4">
+                <div className="card-body">
                   <h1>
-                    <i class="fas fa-user-plus"></i> Register
+                    <i className="fas fa-user-plus"></i> Register
                   </h1>
                   <p>
                     Register to list your bootcamp or rate, review and favorite
                     bootcamps
                   </p>
-                  <form>
-                    <div class="form-group">
-                      <label for="name">Name</label>
+                  <form onSubmit={e => onSubmit(e)}>
+                    <div className="form-group">
+                      <label htmlFor="name">Name</label>
                       <input
                         type="text"
                         name="name"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter full name"
                         required
+                        autoComplete="off"
+                        value={name}
+                        onChange={e => onChange(e)}
                       />
                     </div>
-                    <div class="form-group">
-                      <label for="email">Email Address</label>
+                    <div className="form-group">
+                      <label htmlFor="email">Email Address</label>
                       <input
                         type="email"
                         name="email"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter email"
                         required
+                        autoComplete="off"
+                        value={email}
+                        onChange={e => onChange(e)}
                       />
                     </div>
-                    <div class="form-group">
-                      <label for="password">Password</label>
+                    <div className="form-group">
+                      <label htmlFor="password">Password</label>
                       <input
                         type="password"
                         name="password"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter password"
                         required
+                        autoComplete="off"
+                        value={password}
+                        onChange={e => onChange(e)}
                       />
                     </div>
-                    <div class="form-group mb-4">
-                      <label for="password2">Confirm Password</label>
+                    <div className="form-group mb-4">
+                      <label htmlFor="password2">Confirm Password</label>
                       <input
                         type="password"
                         name="password2"
-                        class="form-control"
+                        className="form-control"
+                        autoComplete="off"
                         placeholder="Confirm password"
                         required
+                        value={password2}
+                        onChange={e => onChange(e)}
                       />
                     </div>
 
                     <div class="card card-body mb-3">
                       <h5>User Role</h5>
+
                       <div class="form-check">
                         <input
                           class="form-check-input"
                           type="radio"
                           name="role"
-                          value="user"
-                          checked
+                          checked={role === "user"}
+                          value="role"
+                          onChange={e => onChange(e)}
                         />
                         <label class="form-check-label">
                           Regular User (Browse, Write reviews, etc)
@@ -77,22 +145,24 @@ const Register = () => {
                           class="form-check-input"
                           type="radio"
                           name="role"
+                          checked={role === "publisher"}
                           value="publisher"
+                          onChange={e => onChange(e)}
                         />
                         <label class="form-check-label">
                           Bootcamp Publisher
                         </label>
                       </div>
                     </div>
-                    <p class="text-danger">
+                    <p className="text-danger">
                       * You must be affiliated with the bootcamp in some way in
                       order to add it to DevCamper.
                     </p>
-                    <div class="form-group">
+                    <div className="form-group">
                       <input
                         type="submit"
                         value="Register"
-                        class="btn btn-primary btn-block"
+                        className="btn btn-primary btn-block"
                       />
                     </div>
                   </form>
@@ -106,4 +176,13 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { setAlert, register })(Register);

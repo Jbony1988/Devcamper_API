@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const newLocal = "publisher";
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,8 +20,8 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "publisher"],
-    default: "user"
+    default: newLocal,
+    enum: ["user", "publisher"]
   },
   password: {
     type: String,

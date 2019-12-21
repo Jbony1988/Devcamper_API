@@ -5,9 +5,9 @@ const NavBar = () => (
   <Fragment>
     <nav className="navbar navbar-expand-md navbar-dark bg-primary">
       <div className="container">
-        <a className="navbar-brand" href="index.html">
+        <Link className="navbar-brand" to="/">
           <i className="fas fa-laptop-code"></i> DevCamper
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -20,7 +20,7 @@ const NavBar = () => (
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to="/" className="nav-link" href="login.html">
+              <Link to="/login" className="nav-link" href="login.html">
                 <i className="fas fa-sign-in-alt"></i> Login
               </Link>
             </li>
@@ -35,9 +35,11 @@ const NavBar = () => (
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="bootcamps.html">
+              {/* <a className="nav-link" href="bootcamps.html"> */}
+              <Link to="/bootcamps" className="nav-link">
                 Browse Bootcamps
-              </a>
+              </Link>
+              {/* </a> */}
             </li>
           </ul>
         </div>
