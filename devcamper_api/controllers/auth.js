@@ -7,7 +7,6 @@ const User = require("../models/User");
 // @desc      Register user
 // @route     POST /api/v1/auth/register
 // @access    Public
-debugger;
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
 
@@ -35,10 +34,9 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @desc Login user
-// @route POST/api/v1/auth/login
-// @access Public
-
+// @desc      Login user
+// @route     POST /api/v1/auth/login
+// @access    Public
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -236,7 +234,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 };
 
 // / Get token from model, create cookie and send response
-// const sendTokenResponse = asyncHandler(async (user, statusCode, res) => {
+// const sendTokenResponse = asyncHandler(async (user, statusCode, req, res) => {
 //   // Create token
 //   const token = user.getSignedJwtToken();
 //   let userInfo = null;
@@ -244,7 +242,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 //     // Verify token
 //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 //     console.log(decoded);
-//     userInfo = await User.findById(decoded.id).select("-password");
+//     req.user = await User.findById(decoded.id).select("-password");
 //   } catch (err) {
 //     return console.log(err.message);
 //   }
@@ -265,7 +263,6 @@ const sendTokenResponse = (user, statusCode, res) => {
 //     .cookie("token", token, options)
 //     .json({
 //       success: true,
-//       token,
-//       userInfo
+//       token
 //     });
 // });

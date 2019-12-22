@@ -2,7 +2,10 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   AUTH_ERROR,
-  USER_LOADED
+  USER_LOADED,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT
 } from "../actions/types";
 import Cookies from "js-cookie";
 
@@ -24,20 +27,22 @@ export default function(state = initialState, action) {
         user: payload
       };
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       Cookies.set("token", payload.token);
       return {
         ...state,
         ...payload,
         isAuthenticated: true,
-        loading: false,
-        user: payload.userInfo
+        loading: false
       };
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGIN_FAIL:
+    case LOGOUT:
       Cookies.remove("token");
       return {
         ...state,
-        ...payload,
+        token: null,
         isAuthenticated: false,
         loading: false
       };

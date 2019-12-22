@@ -1,13 +1,17 @@
 import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { register } from "../../actions/auth";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 
-import axios from "axios";
-
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAuthenticated, isToken }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,6 +59,10 @@ const Register = ({ setAlert, register }) => {
     }
   };
 
+  // Redirect if logged in
+  if (isToken) {
+    return <Redirect to="/bootcamps" />;
+  }
   return (
     <Fragment>
       <section className="form mt-5">
@@ -182,7 +190,8 @@ Register.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  isToken: state.auth.token
 });
 
 export default connect(mapStateToProps, { setAlert, register })(Register);
