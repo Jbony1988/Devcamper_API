@@ -12,7 +12,7 @@ const Register = ({ setAlert, register }) => {
     name: "",
     email: "",
     password: "",
-    role: "",
+    role: "user",
     user: true,
     publisher: false,
     password2: ""
@@ -133,7 +133,7 @@ const Register = ({ setAlert, register }) => {
                           type="radio"
                           name="role"
                           checked={role === "user"}
-                          value="role"
+                          value="user"
                           onChange={e => onChange(e)}
                         />
                         <label class="form-check-label">
