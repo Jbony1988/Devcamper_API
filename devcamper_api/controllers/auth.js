@@ -24,15 +24,15 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @desc Load user
 // @route POST/api/v1/auth/user
 // @access Public
-exports.loadUser = asyncHandler(async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
+// exports.loadUser = asyncHandler(async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.user.id).select("-password");
+//     res.json(user);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 // @desc      Login user
 // @route     POST /api/v1/auth/login

@@ -60,8 +60,8 @@ const Register = ({ setAlert, register, isAuthenticated, isToken }) => {
   };
 
   // Redirect if logged in
-  if (isToken) {
-    return <Redirect to="/bootcamps" />;
+  if (isAuthenticated) {
+    return <Redirect to="/manage-bootcamps" />;
   }
   return (
     <Fragment>
@@ -190,8 +190,7 @@ Register.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  isToken: state.auth.token
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { setAlert, register })(Register);

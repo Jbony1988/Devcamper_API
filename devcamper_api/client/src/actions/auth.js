@@ -13,22 +13,23 @@ import Cookies from "js-cookie";
 import setAuthCookie from "../utils/setAuthCookie";
 
 // lOAD USER
-// export const loadUser = () => async dispatch => {
-//   if (Cookies.get("token")) {
-//     setAuthCookie(Cookies.get("token"));
-//   }
-//   try {
-//     const res = await axios.get("/api/v1/auth/me");
-//     dispatch({
-//       type: USER_LOADED,
-//       payload: res.data
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: AUTH_ERROR
-//     });
-//   }
-// };
+export const loadUser = () => async dispatch => {
+  if (document.cookie) {
+    const token = document.cookie;
+    setAuthCookie(token);
+  }
+  try {
+    const res = await axios.get("/api/v1/auth/me");
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR
+    });
+  }
+};
 
 // Register User
 

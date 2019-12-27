@@ -90,10 +90,10 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => (
                   |
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="bootcamps.html">
+              <li className="nav-item">
+                <Link to="/bootcamps" className="nav-link">
                   Browse Bootcamps
-                </a>
+                </Link>
               </li>
             </ul>
           )}

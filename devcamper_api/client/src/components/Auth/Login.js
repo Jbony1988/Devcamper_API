@@ -32,9 +32,10 @@ const Login = ({ login, isAuthenticated, isToken }) => {
   };
 
   // Redirect if logged in
-  if (isToken) {
-    return <Redirect to="/bootcamps" />;
+  if (isAuthenticated) {
+    return <Redirect to="/manage-account" />;
   }
+
   return (
     <Fragment>
       <section className="form mt-5">
@@ -106,8 +107,7 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  isToken: state.auth.token
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { login })(Login);

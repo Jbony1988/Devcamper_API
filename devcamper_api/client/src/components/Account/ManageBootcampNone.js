@@ -1,6 +1,13 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export const ManageBootcampNone = () => {
+export const ManageBootcampNone = ({ isAuthenticated }) => {
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
   return (
     <Fragment>
       <section class="container mt-5">
@@ -29,4 +36,12 @@ export const ManageBootcampNone = () => {
   );
 };
 
-export default ManageBootcampNone;
+ManageBootcampNone.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps)(ManageBootcampNone);

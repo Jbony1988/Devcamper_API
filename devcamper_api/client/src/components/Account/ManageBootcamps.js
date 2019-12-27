@@ -1,6 +1,15 @@
 import React, { Fragment } from "react";
+import image from "../../img/image_1.jpg";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const ManageBootcamps = () => {
+const ManageBootcamps = ({ isAuthenticated }) => {
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <Fragment>
       <section class="container mt-5">
@@ -12,7 +21,7 @@ const ManageBootcamps = () => {
                 <div class="card mb-3">
                   <div class="row no-gutters">
                     <div class="col-md-4">
-                      <img src="img/image_1.jpg" class="card-img" alt="..." />
+                      <img src={image} class="card-img" alt="..." />
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">
@@ -80,4 +89,12 @@ const ManageBootcamps = () => {
   );
 };
 
-export default ManageBootcamps;
+ManageBootcamps.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps)(ManageBootcamps);

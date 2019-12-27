@@ -24,11 +24,10 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload
+        user: payload.data
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      Cookies.set("token", payload.token);
       return {
         ...state,
         ...payload,
@@ -39,7 +38,7 @@ export default function(state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      Cookies.remove("token");
+      Cookies.remove();
       return {
         ...state,
         token: null,

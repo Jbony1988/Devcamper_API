@@ -1,6 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
+import { connect } from "react-redux";
+import store from "../../store";
+import { loadUser } from "../../actions/auth";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const ManageAccount = () => {
+const ManageAccount = ({ user: { name, email } }) => {
+  // Redirect if not authenticated
+  // if (!isAuthenticated) {
+  //   return <Redirect to="/login" />;
+  // }
+
+  useEffect(() => {
+    store.dispatch(loadUser());
+    // console.log(user);
+  }, [loadUser]);
+
   return (
     <Fragment>
       <section class="container mt-5">
@@ -17,7 +32,7 @@ const ManageAccount = () => {
                       name="title"
                       class="form-control"
                       placeholder="Name"
-                      value="John Doe"
+                      value={name}
                     />
                   </div>
                   <div class="form-group">
@@ -27,7 +42,7 @@ const ManageAccount = () => {
                       name="email"
                       class="form-control"
                       placeholder="Email"
-                      value="jdoe@gmail.com"
+                      value={email}
                     />
                   </div>
                   <div class="form-group">
@@ -59,4 +74,12 @@ const ManageAccount = () => {
   );
 };
 
-export default ManageAccount;
+ManageAccount.propTypes = {
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps)(ManageAccount);

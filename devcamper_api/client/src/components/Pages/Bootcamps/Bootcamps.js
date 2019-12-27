@@ -1,10 +1,16 @@
-import React, { Fragment } from "react";
-import image1 from "../../../img/image_1.jpg";
-import image2 from "../../../img/image_2.jpg";
-import image3 from "../../../img/image_3.jpg";
-import image4 from "../../../img/image_4.jpg";
+import React, { Fragment, useEffect } from "react";
+import Bootcamp from "../../BootcampCard/Bootcamp";
+import { connect } from "react-redux";
 
-const Bootcamps = () => {
+import { getBootcamps } from "../../../actions/bootcamp";
+import store from "../../../store";
+
+const Bootcamps = ({ bootcamp: { bootcamps, loading } }) => {
+  useEffect(() => {
+    store.dispatch(getBootcamps());
+  }, [getBootcamps]);
+  console.log(bootcamps, loading);
+
   return (
     <Fragment>
       {/* <!-- Latest bootcamps --> */}
@@ -104,8 +110,11 @@ const Bootcamps = () => {
             </div>
             {/* <!-- Main col --> */}
             <div class="col-md-8">
+              {bootcamps.map(bootcamp => (
+                <Bootcamp key={bootcamp._id} bootcamp={bootcamp} />
+              ))}
               {/* <!-- Bootcamps --> */}
-              <div class="card mb-3">
+              {/* <div class="card mb-3">
                 <div class="row no-gutters">
                   <div class="col-md-4">
                     <img src={image1} class="card-img" alt="..." />
@@ -198,7 +207,7 @@ const Bootcamps = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* <!-- Pagination --> */}
               <nav aria-label="Page navigation example">
@@ -238,4 +247,8 @@ const Bootcamps = () => {
   );
 };
 
-export default Bootcamps;
+const mapStateToProps = state => ({
+  bootcamp: state.bootcamps
+});
+
+export default connect(mapStateToProps, { getBootcamps })(Bootcamps);

@@ -24,17 +24,21 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Home from "./components/Pages/Home/Home";
+
+import PrivateRoute from "./components/routing/PrivateRoute";
 import "./App.css";
 import "./css/bootstrap.css";
 
-// if (Cookies.get("token")) {
-//   setAuthCookie(Cookies.get("token"));
-// }
+import setAuthToken from "./utils/setAuthCookie";
+
+if (document.cookie) {
+  setAuthToken(document.cookie);
+}
 
 const App = () => {
-  // useEffect(() => {
-  //   store.dispatch(loadUser);
-  // }, []);
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, [loadUser]);
 
   return (
     <Provider store={store}>
@@ -42,12 +46,24 @@ const App = () => {
         <Fragment>
           <NavBar />
           <Alert />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/manage-account" component={ManageAccount} />
-            <Route exact path="/manage-Bootcamps" component={ManageBootcamps} />
-            <Route exact path="/manage-reviews" component={ManageReviews} />
+            <PrivateRoute
+              exact
+              path="/manage-account"
+              component={ManageAccount}
+            />
+            <PrivateRoute
+              exact
+              path="/manage-bootcamps"
+              component={ManageBootcamps}
+            />
+            <PrivateRoute
+              exact
+              path="/manage-reviews"
+              component={ManageReviews}
+            />
             <Route exact path="/register" component={Register} />
             <Route exact path="/bootcamps" component={Bootcamps} />
           </Switch>
