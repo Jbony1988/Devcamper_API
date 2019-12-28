@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
-import Career from "../Careers/Careers";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { getBootcampbyID } from "../../actions/bootcamp";
+import { connect } from "react-redux";
 
-const Bootcamp = ({ bootcamp: { name, careers, photo } }) => {
+const Bootcamp = ({ bootcamp: { _id, name, careers, photo } }) => {
+  // useEffect(() => {
+  //   getBootcampbyID(match.params.id);
+  // }, [getBootcampbyID, match]);
+
   return (
     <div className="card mb-3">
       <div className="row no-gutters">
@@ -16,10 +22,12 @@ const Bootcamp = ({ bootcamp: { name, careers, photo } }) => {
         <div className="col-md-8">
           <div className="card-body">
             <h5 className="card-title">
-              <a href="bootcamp.html">
+              <Link to={`/bootcamp/${_id}`}>
+                {/* <a href="bootcamp.html"> */}
                 {name}
                 <span className="float-right badge badge-success">8.8</span>
-              </a>
+                {/* </a> */}
+              </Link>
             </h5>
             <span className="badge badge-dark mb-2">Boston, MA</span>
 

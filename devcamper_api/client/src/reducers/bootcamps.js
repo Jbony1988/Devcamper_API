@@ -1,12 +1,14 @@
 import {
   GET_BOOTCAMP_SUCCESS,
-  GET_BOOTCAMP_SUCCESS_ERROR
+  GET_BOOTCAMP_SUCCESS_ERROR,
+  GET_SINGLE_BOOTCAMP,
+  GET_SINGLE_BOOTCAMP_ERROR
 } from "../actions/types";
 
 const initialState = {
   bootcamps: [],
   loading: true,
-  bootcamp: null
+  bootcamp: []
 };
 
 export default function(state = initialState, action) {
@@ -23,8 +25,19 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        bootcamps: [],
-        bootcamp: null
+        bootcamps: []
+      };
+    case GET_SINGLE_BOOTCAMP:
+      return {
+        ...state,
+        loading: false,
+        bootcamp: payload.data
+      };
+    case GET_SINGLE_BOOTCAMP_ERROR:
+      return {
+        ...state,
+        loading: false,
+        bootcamp: []
       };
     default:
       return state;

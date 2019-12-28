@@ -24,6 +24,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Home from "./components/Pages/Home/Home";
+import Bootcamp from "./components/Bootcamp/Bootcamp";
 
 import PrivateRoute from "./components/routing/PrivateRoute";
 import "./App.css";
@@ -66,6 +67,7 @@ const App = () => {
             />
             <Route exact path="/register" component={Register} />
             <Route exact path="/bootcamps" component={Bootcamps} />
+            <Route exact path="/bootcamp/:id" component={Bootcamp} />
           </Switch>
         </Fragment>
       </Router>

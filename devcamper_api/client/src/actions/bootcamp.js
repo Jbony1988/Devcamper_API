@@ -1,8 +1,28 @@
 import axios from "axios";
 
-import { GET_BOOTCAMP_SUCCESS, GET_BOOTCAMP_SUCCESS_ERROR } from "./types";
+import {
+  GET_BOOTCAMP_SUCCESS,
+  GET_BOOTCAMP_SUCCESS_ERROR,
+  GET_SINGLE_BOOTCAMP,
+  GET_SINGLE_BOOTCAMP_ERROR
+} from "./types";
 
-// lOAD USER
+// GET Bootcamp by ID
+export const getBootcampbyID = _id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/v1/bootcamps/${_id}`);
+    dispatch({
+      type: GET_SINGLE_BOOTCAMP,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: GET_SINGLE_BOOTCAMP_ERROR
+    });
+  }
+};
+
+// GET ALL BOOTCAMPS
 export const getBootcamps = () => async dispatch => {
   try {
     const res = await axios.get("/api/v1/bootcamps");
