@@ -23,21 +23,13 @@ const Bootcamp = ({ bootcamp: { _id, name, careers, photo } }) => {
           <div className="card-body">
             <h5 className="card-title">
               <Link to={`/bootcamp/${_id}`}>
-                {/* <a href="bootcamp.html"> */}
                 {name}
                 <span className="float-right badge badge-success">8.8</span>
-                {/* </a> */}
               </Link>
             </h5>
             <span className="badge badge-dark mb-2">Boston, MA</span>
 
             <p className="card-text">{careers}</p>
-
-            {/* {careers.map((career, i) => (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <Career key={i} career={career} />
-              </div>
-            ))} */}
           </div>
         </div>
       </div>

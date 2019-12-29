@@ -11,6 +11,7 @@ import Register from "./components/Auth/Register";
 import Alert from "./components/Alert/Alert";
 import ManageAccount from "./components/Account/ManageAccount";
 import Bootcamps from "./components/Pages/Bootcamps/Bootcamps";
+import Reviews from "./components/Reviews/Reviews";
 import ManageBootcampNone from "./components/Account/ManageBootcampNone";
 import ManageBootcamps from "./components/Account/ManageBootcamps";
 import ManageReviews from "./components/Account/ManageReviews";
@@ -68,6 +69,7 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/bootcamps" component={Bootcamps} />
             <Route exact path="/bootcamp/:id" component={Bootcamp} />
+            <Route exact path="/bootcamp/:id/reviews" component={Reviews} />
           </Switch>
         </Fragment>
       </Router>
