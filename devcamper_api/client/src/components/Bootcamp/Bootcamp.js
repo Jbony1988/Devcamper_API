@@ -2,14 +2,27 @@ import React, { useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import { getBootcampbyID } from "../../actions/bootcamp";
 import { getCourses } from "../../actions/courses";
+import { getReviews } from "../../actions/reviews";
 import Spinner from "../Spinner/Spinner";
+import Reviews from "../../components/Reviews/Reviews";
 import CourseItem from "../Course/CourseItem";
 import PropTypes from "prop-types";
 
 const Bootcamp = ({
   getBootcampbyID,
   getCourses,
-  bootcamp: { _id, name, description, averageCost },
+  bootcamp: {
+    _id,
+    name,
+    averageRating,
+    description,
+    averageCost,
+    website,
+    housing,
+    jobAssistance,
+    jobGuarantee,
+    acceptGi
+  },
   courses,
   loading,
   match
@@ -18,7 +31,7 @@ const Bootcamp = ({
     getBootcampbyID(match.params.id);
     getCourses(match.params.id);
   }, [getBootcampbyID, getCourses, match]);
-  console.log(_id);
+
   return (
     <Fragment>
       {loading ? (
@@ -102,7 +115,15 @@ const Bootcamp = ({
               </div>
 
               {/* <!-- Sidebar --> */}
-              <div className="col-md-4">
+              <Reviews
+                rating={averageRating}
+                acceptGi={acceptGi}
+                jobGuarantee={jobGuarantee}
+                jobAssistance={jobAssistance}
+                housing={housing}
+                website={website}
+              />
+              {/* <div className="col-md-4">
                 <img src="img/image_1.jpg" className="img-thumbnail" alt="" />
 
                 <h1 className="text-center my-4">
@@ -111,7 +132,7 @@ const Bootcamp = ({
                   </span>{" "}
                   Rating
                 </h1>
-                {/* <!-- Buttons --> */}
+        
                 <a href="reviews.html" className="btn btn-dark btn-block my-3">
                   <i className="fas fa-comments"></i> Read Reviews
                 </a>
@@ -128,9 +149,9 @@ const Bootcamp = ({
                 >
                   <i className="fas fa-globe"></i> Visit Website
                 </a>
-                {/* <!-- Map --> */}
+                
                 <div id="map" style={{ width: "100%", height: 300 }}></div>
-                {/* <!-- Perks --> */}
+       
                 <ul className="list-group list-group-flush" className="mt-4">
                   <li className="list-group-item">
                     <i className="fas fa-check text-success"></i> Housing
@@ -146,7 +167,7 @@ const Bootcamp = ({
                     Bill
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -167,6 +188,8 @@ const mapStateToProps = state => ({
   courses: state.courses.courses
 });
 
-export default connect(mapStateToProps, { getBootcampbyID, getCourses })(
-  Bootcamp
-);
+export default connect(mapStateToProps, {
+  getBootcampbyID,
+  getCourses,
+  getReviews
+})(Bootcamp);
