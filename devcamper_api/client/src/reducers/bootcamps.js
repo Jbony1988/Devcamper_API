@@ -2,6 +2,8 @@ import {
   GET_BOOTCAMP_SUCCESS,
   GET_BOOTCAMP_SUCCESS_ERROR,
   GET_SINGLE_BOOTCAMP,
+  GET_BOOTCAMP_BY_RADIUS_ERROR,
+  GET_BOOTCAMP_BY_RADIUS,
   GET_SINGLE_BOOTCAMP_ERROR
 } from "../actions/types";
 
@@ -20,6 +22,18 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         bootcamps: payload.data
+      };
+    case GET_BOOTCAMP_BY_RADIUS:
+      return {
+        ...state,
+        loading: false,
+        bootcamps: payload.data
+      };
+    case GET_BOOTCAMP_BY_RADIUS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        bootcamps: []
       };
     case GET_BOOTCAMP_SUCCESS_ERROR:
       return {

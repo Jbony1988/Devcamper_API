@@ -1,20 +1,34 @@
 import React, { Fragment, useEffect } from "react";
+
 import Bootcamp from "../../BootcampCard/Bootcamp";
 import Spinner from "../../Spinner/Spinner";
+import { useLocation } from "react-router-dom";
+import { getBootcampsByRadius } from "../../../actions/bootcamp";
+import { getBootcampsSelectors } from "../../../reducers/selectors";
 import { connect } from "react-redux";
 
 import { getBootcamps } from "../../../actions/bootcamp";
 import store from "../../../store";
 
-const Bootcamps = ({ bootcamp: { bootcamps, loading } }) => {
+const Bootcamps = ({ bootcamp: { bootcamps, loading }, match }) => {
   useEffect(() => {
-    store.dispatch(getBootcamps());
-  }, [getBootcamps]);
+    const { zipcode, distance } = match.params;
+
+    // console.log(params);
+    // const params = {
+    //   zipcode,
+    //   miles
+    // };
+    // console.log(miles, zipcode, "browsebootcamps");
+    store.dispatch(getBootcampsByRadius(zipcode, distance));
+
+    // store.dispatch(getBootcamps());
+  }, [getBootcampsByRadius, match]);
   console.log(bootcamps, loading);
 
   return (
     <Fragment>
-      {bootcamps === null || loading ? (
+      {!bootcamps || loading ? (
         <Spinner />
       ) : (
         <section class="browse my-5">
@@ -157,7 +171,7 @@ const Bootcamps = ({ bootcamp: { bootcamps, loading } }) => {
 };
 
 const mapStateToProps = state => ({
-  bootcamp: state.bootcamps
+  bootcamp: getBootcampsSelectors(state)
 });
 
-export default connect(mapStateToProps, { getBootcamps })(Bootcamps);
+export default connect(mapStateToProps, { getBootcampsByRadius })(Bootcamps);

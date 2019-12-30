@@ -1,6 +1,46 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { Redirect, Link } from "react-router-dom";
 
 const Home = () => {
+  const [formData, setFormData] = useState({
+    miles: "",
+    zipcode: ""
+  });
+
+  const [findBootCampsWithRadius, setRadius] = useState(false);
+
+  const { miles, zipcode } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    const radius = {
+      miles,
+      zipcode
+    };
+
+    setRadius(true);
+
+    console.log(miles, zipcode);
+  };
+
+  const coordinates = {
+    miles,
+    zipcode
+  };
+  // if (findBootCampsWithRadius === true) {
+  //   return (
+  //     <Redirect
+  //       to={{
+  //         pathname: "/bootcamps",
+  //         params: { miles: miles, zipcode: zipcode }
+  //       }}
+  //     />
+  //   );
+  // }
+
   return (
     <Fragment>
       <section class="showcase">
@@ -16,7 +56,9 @@ const Home = () => {
                       type="text"
                       class="form-control"
                       name="miles"
+                      value={miles}
                       placeholder="Miles From"
+                      onChange={e => onChange(e)}
                     />
                   </div>
                 </div>
@@ -26,16 +68,24 @@ const Home = () => {
                       type="text"
                       class="form-control"
                       name="zipcode"
+                      value={zipcode}
                       placeholder="Enter Zipcode"
+                      onChange={e => onChange(e)}
                     />
                   </div>
                 </div>
               </div>
-              <input
+              <Link
+                class="btn btn-primary btn-block"
+                to={`/bootcamps/radius/${zipcode}/${miles}`}
+              >
+                Find Bootcamps
+              </Link>
+              {/* <input
                 type="submit"
                 value="Find Bootcamps"
                 class="btn btn-primary btn-block"
-              />
+              /> */}
             </form>
           </div>
         </div>

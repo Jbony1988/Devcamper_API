@@ -69,6 +69,11 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/bootcamps" component={Bootcamps} />
             <Route exact path="/bootcamp/:id" component={Bootcamp} />
+            <Route
+              exact
+              path="/bootcamps/radius/:zipcode/:distance"
+              component={Bootcamps}
+            />
             <Route exact path="/bootcamp/:id/reviews" component={Reviews} />
           </Switch>
         </Fragment>
