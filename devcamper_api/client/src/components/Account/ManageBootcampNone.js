@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const ManageBootcampNone = ({ isAuthenticated }) => {
@@ -17,9 +17,13 @@ export const ManageBootcampNone = ({ isAuthenticated }) => {
               <div class="card-body">
                 <h1 class="mb-2">Manage Bootcamp</h1>
                 <p class="lead">You have not yet added a bootcamp</p>
-                <a href="add-bootcamp.html" class="btn btn-primary btn-block">
+                <Link
+                  className="btn btn-primary btn-block"
+                  to="/create-bootcamp"
+                >
                   Add Bootcamp
-                </a>
+                </Link>
+
                 <p class="text-muted mt-5">
                   * You can only add one bootcamp per account.
                 </p>

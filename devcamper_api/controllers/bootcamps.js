@@ -1,44 +1,43 @@
-const Bootcamp = require("../models/Bootcamp");
 const path = require("path");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const geocoder = require("../utils/geocoder");
+const Bootcamp = require("../models/Bootcamp");
 
-// @desc Get all bootcamps
-// @route GET/api/v1/bootcamps
-// @access Public
+// @desc      Get all bootcamps
+// @route     GET /api/v1/bootcamps
+// @access    Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
-// @desc Get single bootcamps
-// @route GET/api/v1/bootcamps/:id
-// @access Public
+// @desc      Get single bootcamp
+// @route     GET /api/v1/bootcamps/:id
+// @access    Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
 
-  // if no bootcamp exist return error message using ErrorResponse class
   if (!bootcamp) {
-    // make sure to return first res.status becuase you will get error headers already sent
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
   }
+
   res.status(200).json({ success: true, data: bootcamp });
 });
 
-// @desc Create new bookcamp
-// @route POST/api/v1/bootcamps
-// @access Private
+// @desc      Create new bootcamp
+// @route     POST /api/v1/bootcamps
+// @access    Private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
-  // Add user to body
+  // Add user to req,body
   req.body.user = req.user.id;
 
-  // Check for published bootcamps
-  const publishBootcamp = await Bootcamp.findOne({ user: req.user.id });
+  // Check for published bootcamp
+  const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id });
 
-  // If the user is not an admin they can only add one bootcamp
-  if (publishBootcamp && req.user.role !== "admin") {
+  // If the user is not an admin, they can only add one bootcamp
+  if (publishedBootcamp && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
         `The user with ID ${req.user.id} has already published a bootcamp`,
@@ -55,9 +54,9 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc Update bootcamp
-// @route PUT/api/v1/bootcamps/:id
-// @access Private
+// @desc      Update bootcamp
+// @route     PUT /api/v1/bootcamps/:id
+// @access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   let bootcamp = await Bootcamp.findById(req.params.id);
 
@@ -85,9 +84,9 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: bootcamp });
 });
 
-// @desc Delete bootcamp
-// @route DELETE/api/v1/bootcamps/:id
-// @access Private
+// @desc      Delete bootcamp
+// @route     DELETE /api/v1/bootcamps/:id
+// @access    Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
 
@@ -108,28 +107,28 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   }
 
   bootcamp.remove();
+
   res.status(200).json({ success: true, data: {} });
 });
 
-// @desc get Bootcamps within a certain radius
-// @route GET /api/v1/bootcamps/radius/:zipcode/:distance
+// @desc      Get bootcamps within a radius
+// @route     GET /api/v1/bootcamps/radius/:zipcode/:distance
+// @access    Private
 exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   const { zipcode, distance } = req.params;
 
-  //Get lat/lng from geocoder
+  // Get lat/lng from geocoder
   const loc = await geocoder.geocode(zipcode);
   const lat = loc[0].latitude;
   const lng = loc[0].longitude;
 
   // Calc radius using radians
   // Divide dist by radius of Earth
-  // Earth Radius = 3,963 mi /6,378 km
+  // Earth Radius = 3,963 mi / 6,378 km
   const radius = distance / 3963;
 
   const bootcamps = await Bootcamp.find({
-    location: {
-      $geoWithin: { $center: [[lng, lat], radius] }
-    }
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
 
   res.status(200).json({
@@ -139,9 +138,9 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc Upload photo for bootcamp
-// @route PUT/api/v1/bootcamps/:photo
-// @access Private
+// @desc      Upload photo for bootcamp
+// @route     PUT /api/v1/bootcamps/:id/photo
+// @access    Private
 exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
 
@@ -166,14 +165,13 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   }
 
   const file = req.files.file;
-  // const file = req.files.;
-  console.log(file);
+
   // Make sure the image is a photo
   if (!file.mimetype.startsWith("image")) {
     return next(new ErrorResponse(`Please upload an image file`, 400));
   }
 
-  // Checl file size
+  // Check filesize
   if (file.size > process.env.MAX_FILE_UPLOAD) {
     return next(
       new ErrorResponse(

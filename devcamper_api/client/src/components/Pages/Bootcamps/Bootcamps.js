@@ -10,9 +10,9 @@ import { connect } from "react-redux";
 import { getBootcamps } from "../../../actions/bootcamp";
 import store from "../../../store";
 
-const Bootcamps = ({ bootcamp: { bootcamps, loading }, match }) => {
+const Bootcamps = ({ bootcamp: { bootcamps, loading }, match, user }) => {
   useEffect(() => {
-    const { zipcode, distance } = match.params;
+    // const { zipcode, distance } = match.params;
 
     // console.log(params);
     // const params = {
@@ -20,11 +20,12 @@ const Bootcamps = ({ bootcamp: { bootcamps, loading }, match }) => {
     //   miles
     // };
     // console.log(miles, zipcode, "browsebootcamps");
-    store.dispatch(getBootcampsByRadius(zipcode, distance));
+    // store.dispatch(getBootcampsByRadius(zipcode, distance));
 
-    // store.dispatch(getBootcamps());
-  }, [getBootcampsByRadius, match]);
-  console.log(bootcamps, loading);
+    store.dispatch(getBootcamps());
+  }, [getBootcampsByRadius]);
+  // const publishersBootcamp = bootcamps.filter(b => b.user === user._id);
+  // console.log(publishersBootcamp, loading);
 
   return (
     <Fragment>
@@ -171,7 +172,8 @@ const Bootcamps = ({ bootcamp: { bootcamps, loading }, match }) => {
 };
 
 const mapStateToProps = state => ({
-  bootcamp: getBootcampsSelectors(state)
+  bootcamp: getBootcampsSelectors(state),
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps, { getBootcampsByRadius })(Bootcamps);

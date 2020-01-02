@@ -9,7 +9,6 @@ import {
   AUTH_ERROR,
   LOGOUT
 } from "./types";
-import Cookies from "js-cookie";
 import setAuthCookie from "../utils/setAuthCookie";
 
 // lOAD USER

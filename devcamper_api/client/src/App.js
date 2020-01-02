@@ -12,6 +12,7 @@ import Alert from "./components/Alert/Alert";
 import ManageAccount from "./components/Account/ManageAccount";
 import Bootcamps from "./components/Pages/Bootcamps/Bootcamps";
 import Reviews from "./components/Reviews/Reviews";
+import CreateBootcamp from "./components/Account/CreateBootcamp";
 import ManageBootcampNone from "./components/Account/ManageBootcampNone";
 import ManageBootcamps from "./components/Account/ManageBootcamps";
 import ManageReviews from "./components/Account/ManageReviews";
@@ -25,6 +26,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Home from "./components/Pages/Home/Home";
+import { getBootcamps } from "./actions/bootcamp";
 import Bootcamp from "./components/Bootcamp/Bootcamp";
 
 import PrivateRoute from "./components/routing/PrivateRoute";
@@ -32,6 +34,7 @@ import "./App.css";
 import "./css/bootstrap.css";
 
 import setAuthToken from "./utils/setAuthCookie";
+import { updateBootcamp } from "./actions/bootcamp";
 
 if (document.cookie) {
   setAuthToken(document.cookie);
@@ -40,6 +43,7 @@ if (document.cookie) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(getBootcamps());
   }, [loadUser]);
 
   return (
@@ -60,6 +64,11 @@ const App = () => {
               exact
               path="/manage-bootcamps"
               component={ManageBootcamps}
+            />
+            <PrivateRoute
+              exact
+              path="/create-bootcamp"
+              component={CreateBootcamp}
             />
             <PrivateRoute
               exact

@@ -2,9 +2,13 @@ import {
   GET_BOOTCAMP_SUCCESS,
   GET_BOOTCAMP_SUCCESS_ERROR,
   GET_SINGLE_BOOTCAMP,
+  CREATE_BOOTCAMP_SUCCESS,
+  CREATE_BOOTCAMP_SUCCESS_ERROR,
   GET_BOOTCAMP_BY_RADIUS_ERROR,
   GET_BOOTCAMP_BY_RADIUS,
-  GET_SINGLE_BOOTCAMP_ERROR
+  GET_SINGLE_BOOTCAMP_ERROR,
+  BOOTCAMP_UPDATE_SUCCESS,
+  BOOTCAMP_UPDATE_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -42,16 +46,24 @@ export default function(state = initialState, action) {
         bootcamps: []
       };
     case GET_SINGLE_BOOTCAMP:
+    case CREATE_BOOTCAMP_SUCCESS:
+    case BOOTCAMP_UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
         bootcamp: payload.data
       };
     case GET_SINGLE_BOOTCAMP_ERROR:
+    case CREATE_BOOTCAMP_SUCCESS_ERROR:
       return {
         ...state,
         loading: false,
         bootcamp: []
+      };
+    case BOOTCAMP_UPDATE_ERROR:
+      return {
+        ...state,
+        loading: false
       };
     default:
       return state;
