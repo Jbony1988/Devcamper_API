@@ -1,24 +1,19 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { createBootcamp } from "../../actions/bootcamp";
-import { getBootcampbyID, updateBootcamp } from "../../actions/bootcamp";
-import store from "../../store";
+import {
+  getBootcampbyID,
+  updateBootcamp,
+  createBootcamp
+} from "../../actions/bootcamp";
 import { connect } from "react-redux";
 
-const CreateBootcamp = ({
-  createBootcamp
-  // match,
-  // bootcamp: {
-  // name,
-  // phone,
-  // email,
-  // website,
-  // description,
-  // housing,
-  // jobAssistance,
-  // jobGuarantee,
-  // acceptGi,
-  // location: { formattedAddress } = {}
-  // }
+const EditBootcamp = ({
+  match,
+  loading,
+  history,
+  bootcamp,
+  createBootcamp,
+  getBootcampbyID,
+  updateBootcamp
 }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -27,32 +22,72 @@ const CreateBootcamp = ({
     phone: "",
     email: "",
     address: "",
-    careers: ""
+    careers: [],
+    housing: false,
+    jobAssistance: false,
+    jobGurantee: false,
+    acceptGi: false
   });
 
   const {
     name,
-    phone,
     description,
-    email,
     website,
+    phone,
+    address,
+    email,
     careers,
-    address
+    housing,
+    jobAssistance,
+    jobGuarantee,
+    acceptGi
   } = formData;
 
-  // useEffect(() => {
-  //   store.dispatch(createBootcamp(formData));
-  // }, [createBootcamp]);
+  // const { location: { formattedAddress } = {}, _id } = bootcamp;
+
+  useEffect(() => {
+    getBootcampbyID(match.params.id);
+
+    setFormData({
+      name: loading || !bootcamp.name ? "" : bootcamp.name,
+      description: loading || !bootcamp.description ? "" : bootcamp.description,
+      website: loading || !bootcamp.website ? "" : bootcamp.website,
+      phone: loading || !bootcamp.phone ? "" : bootcamp.phone,
+      email: loading || !bootcamp.email ? "" : bootcamp.email,
+      address: loading || !bootcamp.address ? "" : bootcamp.address,
+      careers: loading || !bootcamp.careers ? "" : bootcamp.careers,
+      housing: loading || !bootcamp.housing ? null : bootcamp.housing,
+      jobAssistance:
+        loading || !bootcamp.jobAssistance ? null : bootcamp.jobAssistance,
+      jobGurantee:
+        loading || !bootcamp.jobGurantee ? null : bootcamp.jobGurantee,
+      acceptGi: loading || !bootcamp.acceptGi ? null : bootcamp.acceptGi
+    });
+  }, [
+    getBootcampbyID,
+    loading,
+    bootcamp.acceptGi,
+    bootcamp.address,
+    bootcamp.careers,
+    bootcamp.description,
+    bootcamp.email,
+    bootcamp.housing,
+    bootcamp.jobAssistance,
+    bootcamp.jobGurantee,
+    bootcamp.name,
+    bootcamp.phone,
+    bootcamp.website,
+    match.params.id
+  ]);
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
     e.preventDefault();
-    createBootcamp(formData);
-    // console.log(name, phone, description, email, website, careers, address);
+    updateBootcamp(match.params.id, formData, history);
+    // updateBootcamp(match.params.id, formData);
   };
-  // console.log("publishers bootcamp", formattedAddress);
 
   return (
     <Fragment>
@@ -169,7 +204,10 @@ const CreateBootcamp = ({
                       type="checkbox"
                       name="housing"
                       id="housing"
-                      // checked={housing}
+                      checked={housing}
+                      onChange={() =>
+                        setFormData({ ...formData, housing: !housing })
+                      }
                     />
                     <label class="form-check-label" for="housing">
                       Housing
@@ -179,7 +217,13 @@ const CreateBootcamp = ({
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      // checked={jobAssistance}
+                      checked={jobAssistance}
+                      onChange={() =>
+                        setFormData({
+                          ...formData,
+                          jobAssistance: !jobAssistance
+                        })
+                      }
                       name="jobAssistance"
                       id="jobAssistance"
                     />
@@ -191,7 +235,10 @@ const CreateBootcamp = ({
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      // checked={jobGuarantee}
+                      checked={jobGuarantee}
+                      onChange={() =>
+                        setFormData({ ...formData, jobGurantee: !jobGuarantee })
+                      }
                       name="jobGuarantee"
                       id="jobGuarantee"
                     />
@@ -201,10 +248,13 @@ const CreateBootcamp = ({
                   </div>
                   <div class="form-check">
                     <input
-                      // checked={acceptGi}
+                      checked={acceptGi}
                       class="form-check-input"
                       type="checkbox"
                       name="acceptGi"
+                      onChange={() =>
+                        setFormData({ ...formData, acceptGi: !acceptGi })
+                      }
                       id="acceptGi"
                     />
                     <label class="form-check-label" for="acceptGi">
@@ -239,7 +289,12 @@ const CreateBootcamp = ({
 };
 
 const mapStateToProps = state => ({
-  bootcamp: state.bootcamps.bootcamp
+  bootcamp: state.bootcamps.bootcamp,
+  loading: state.bootcamps.loading
 });
 
-export default connect(mapStateToProps, { createBootcamp })(CreateBootcamp);
+export default connect(mapStateToProps, {
+  getBootcampbyID,
+  updateBootcamp,
+  createBootcamp
+})(EditBootcamp);

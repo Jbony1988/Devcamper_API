@@ -35,6 +35,7 @@ const SideBar = ({
       <a
         href={`${website}`}
         target="_blank"
+        rel="noopener noreferrer"
         className="btn btn-secondary btn-block my-3"
       >
         <i className="fas fa-globe"></i> Visit Website
@@ -42,7 +43,7 @@ const SideBar = ({
       {/* <!-- Map --> */}
       <div id="map" style={{ width: "100%", height: 300 }}></div>
       {/* <!-- Perks --> */}
-      <ul className="list-group list-group-flush" className="mt-4">
+      <ul className="list-group list-group-flush mt-4">
         <Fragment>
           {!housing ? (
             <li className="list-group-item">

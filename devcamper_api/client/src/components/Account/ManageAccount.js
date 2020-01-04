@@ -2,19 +2,13 @@ import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import store from "../../store";
 import { loadUser } from "../../actions/auth";
-import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ManageAccount = ({ user: { name, email } }) => {
-  // Redirect if not authenticated
-  // if (!isAuthenticated) {
-  //   return <Redirect to="/login" />;
-  // }
-
   useEffect(() => {
     store.dispatch(loadUser());
     // console.log(user);
-  }, [loadUser]);
+  }, []);
 
   return (
     <Fragment>

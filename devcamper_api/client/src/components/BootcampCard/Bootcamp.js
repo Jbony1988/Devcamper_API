@@ -1,13 +1,7 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { getBootcampbyID } from "../../actions/bootcamp";
-import { connect } from "react-redux";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Bootcamp = ({ bootcamp: { _id, name, careers, photo } }) => {
-  // useEffect(() => {
-  //   getBootcampbyID(match.params.id);
-  // }, [getBootcampbyID, match]);
-
   return (
     <div className="card mb-3">
       <div className="row no-gutters">

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+
 import { createBootcamp } from "../../actions/bootcamp";
 
 const CreateBootcamp = ({ createBootcamp }) => {
   const [formData, setFormData] = useState({
-    name: "jb bootcamp",
-    description: "my bootcamp",
+    name: "jbbootcamp",
+    description:
+      "This is a place where you can learn about web development and more...",
     website: "https://expediencehvac.com/",
     phone: "7736807355",
     email: "info@platowdesigns.com",
-    address: "8602 s euclid avenue, Chicago, IL 60617",
-    careers: "Web development",
+    address: "8602 S Euclid Avenue, Chicago, IL 60617",
+    careers: [],
     housing: false,
     jobAssistance: false,
     jobGurantee: false,
@@ -33,13 +35,26 @@ const CreateBootcamp = ({ createBootcamp }) => {
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
+  // console.log(name);
   const onSubmit = e => {
     e.preventDefault();
     console.log(formData);
     createBootcamp(formData);
   };
 
+  const handleChange = e => {
+    const options = e.target.options;
+
+    //  Store course offerings in array
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        careers.push(options[i].value);
+      }
+    }
+    console.log(careers);
+  };
+
+  console.log("this is the course", careers);
   return (
     <section className="container mt-5">
       <h1 className="mb-2">Add Bootcamp</h1>
@@ -139,14 +154,15 @@ const CreateBootcamp = ({ createBootcamp }) => {
                 </div>
                 <div className="form-group">
                   <label>Careers</label>
+
                   <select
                     name="careers"
                     value={careers}
-                    onChange={e => onChange(e)}
+                    multiple={true}
+                    onChange={handleChange}
                     className="custom-select"
-                    multiple
                   >
-                    <option selected={careers}>Select all that apply</option>
+                    <option>Select all that apply</option>
                     <option value="Web Development">Web Development</option>
                     <option value="Mobile Development">
                       Mobile Development
@@ -164,7 +180,9 @@ const CreateBootcamp = ({ createBootcamp }) => {
                     type="checkbox"
                     name="housing"
                     value={housing}
-                    onChange={e => onChange(e)}
+                    onChange={() =>
+                      setFormData({ ...formData, housing: !housing })
+                    }
                     id="housing"
                   />
                   <label className="form-check-label" for="housing">
@@ -177,7 +195,9 @@ const CreateBootcamp = ({ createBootcamp }) => {
                     type="checkbox"
                     name="jobAssistance"
                     value={jobAssistance}
-                    onChange={e => onChange(e)}
+                    onChange={() =>
+                      setFormData({ ...formData, jobGurantee: !jobAssistance })
+                    }
                     id="jobAssistance"
                   />
                   <label className="form-check-label" for="jobAssistance">
@@ -190,7 +210,9 @@ const CreateBootcamp = ({ createBootcamp }) => {
                     type="checkbox"
                     name="jobGuarantee"
                     value={jobGuarantee}
-                    onChange={e => onChange(e)}
+                    onChange={() =>
+                      setFormData({ ...formData, jobGurantee: !jobGuarantee })
+                    }
                     id="jobGuarantee"
                   />
                   <label className="form-check-label" for="jobGuarantee">
@@ -203,7 +225,9 @@ const CreateBootcamp = ({ createBootcamp }) => {
                     type="checkbox"
                     name="acceptGi"
                     value={acceptGi}
-                    onChange={e => onChange(e)}
+                    onChange={() =>
+                      setFormData({ ...formData, acceptGi: !acceptGi })
+                    }
                     id="acceptGi"
                   />
                   <label className="form-check-label" for="acceptGi">

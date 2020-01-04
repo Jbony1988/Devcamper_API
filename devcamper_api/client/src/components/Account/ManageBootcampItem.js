@@ -1,9 +1,16 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 const ManageBootcampItem = ({
+  isAuthenticated,
   bootcamp: { _id, name, photo, averageRating, careers }
 }) => {
+  // console.log(name, "bootcamp name");
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <Fragment>
       <section class="container mt-5">
@@ -58,7 +65,7 @@ const ManageBootcampItem = ({
                   />
                 </form>
                 <Link
-                  to={`/update-bootcamp/${_id}`}
+                  to={`/edit-bootcamp/${_id}`}
                   className="btn btn-primary btn-block"
                 >
                   Edit Bootcamp Details
@@ -70,9 +77,7 @@ const ManageBootcampItem = ({
                 >
                   Manage Courses
                 </a>
-                <a href="#" class="btn btn-danger btn-block">
-                  Remove Bootcamp
-                </a>
+                <Link class="btn btn-danger btn-block">Remove Bootcamp</Link>
                 <p class="text-muted mt-5">
                   * You can only add one bootcamp per account.
                 </p>
@@ -89,4 +94,8 @@ const ManageBootcampItem = ({
   );
 };
 
-export default ManageBootcampItem;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps)(ManageBootcampItem);

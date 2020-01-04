@@ -15,7 +15,7 @@ const ManageBootcamps = ({ isAuthenticated, bootcamp, user }) => {
     // console.log(objectResult);
     // setBootcamp(result);
     // console.log(publisherBootcamp);
-  }, []);
+  }, [setBootcamp, bootcamp, user._id]);
 
   // console.log(name, "bootcamp name");
   if (!isAuthenticated) {

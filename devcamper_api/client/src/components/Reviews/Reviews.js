@@ -10,7 +10,7 @@ const Reviews = ({ match, reviews, loading, bootcamp: { _id, name } }) => {
   useEffect(() => {
     store.dispatch(getReviews(match.params.id));
     store.dispatch(getBootcampbyID(match.params.id));
-  }, [getReviews, getBootcampbyID, match]);
+  }, [match]);
 
   console.log(reviews);
 

@@ -41,6 +41,7 @@ export default function(state = initialState, action) {
       Cookies.remove();
       return {
         ...state,
+        user: null,
         token: null,
         isAuthenticated: false,
         loading: false

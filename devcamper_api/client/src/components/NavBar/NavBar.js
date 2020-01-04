@@ -53,7 +53,7 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => (
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
-                  href="#"
+                  href="#/"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -80,15 +80,15 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => (
                     Manage Account
                   </a> */}
                   <div class="dropdown-divider"></div>
-                  <a onClick={logout} class="dropdown-item">
+                  <Link onClick={logout} class="dropdown-item">
                     <i class="fas fa-sign-out-alt"></i> Logout
-                  </a>
+                  </Link>
                 </div>
               </li>
               <li class="nav-item d-none d-sm-block">
-                <a class="nav-link" href="#">
+                <Link class="nav-link" href="#/">
                   |
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
                 <Link to="/bootcamps" className="nav-link">

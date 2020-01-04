@@ -1,17 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { register } from "../../actions/auth";
-import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 
-const Register = ({ setAlert, register, isAuthenticated, isToken }) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,7 +16,7 @@ const Register = ({ setAlert, register, isAuthenticated, isToken }) => {
     password2: ""
   });
 
-  const { name, email, user, publisher, password, password2, role } = formData;
+  const { name, email, password, password2, role } = formData;
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 

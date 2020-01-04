@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from "react";
 
 import Bootcamp from "../../BootcampCard/Bootcamp";
 import Spinner from "../../Spinner/Spinner";
-import { useLocation } from "react-router-dom";
 import { getBootcampsByRadius } from "../../../actions/bootcamp";
 import { getBootcampsSelectors } from "../../../reducers/selectors";
 import { connect } from "react-redux";
@@ -23,7 +22,7 @@ const Bootcamps = ({ bootcamp: { bootcamps, loading }, match, user }) => {
     // store.dispatch(getBootcampsByRadius(zipcode, distance));
 
     store.dispatch(getBootcamps());
-  }, [getBootcampsByRadius]);
+  }, []);
   // const publishersBootcamp = bootcamps.filter(b => b.user === user._id);
   // console.log(publishersBootcamp, loading);
 
@@ -136,27 +135,27 @@ const Bootcamps = ({ bootcamp: { bootcamps, loading }, match, user }) => {
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link" href="#/">
                         Previous
                       </a>
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link" href="#/">
                         1
                       </a>
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link" href="#/">
                         2
                       </a>
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link" href="#/">
                         3
                       </a>
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link" href="#/">
                         Next
                       </a>
                     </li>
