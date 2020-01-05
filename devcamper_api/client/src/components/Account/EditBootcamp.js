@@ -4,6 +4,7 @@ import {
   updateBootcamp,
   createBootcamp
 } from "../../actions/bootcamp";
+import { bootcamp } from "../../reducers/bootcamps";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -31,20 +32,6 @@ const EditBootcamp = ({
     acceptGi: false
   });
 
-  const {
-    name,
-    description,
-    website,
-    phone,
-    address,
-    email,
-    careers,
-    housing,
-    jobAssistance,
-    jobGuarantee,
-    acceptGi
-  } = formData;
-
   const { location: { formattedAddress } = {}, _id } = bootcamp;
 
   useEffect(() => {
@@ -68,6 +55,7 @@ const EditBootcamp = ({
   }, [
     getBootcampbyID,
     loading,
+    // formattedAddress,
     // bootcamp.acceptGi,
     // bootcamp.address,
     // bootcamp.careers,
@@ -81,6 +69,20 @@ const EditBootcamp = ({
     // bootcamp.website,
     match.params.id
   ]);
+
+  const {
+    name,
+    description,
+    website,
+    phone,
+    address,
+    email,
+    careers,
+    housing,
+    jobAssistance,
+    jobGuarantee,
+    acceptGi
+  } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

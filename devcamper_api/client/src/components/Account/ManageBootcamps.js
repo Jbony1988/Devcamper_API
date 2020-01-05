@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import ManageBootcampNone from "../Account/ManageBootcampNone";
 import ManageBootcampItem from "../Account/ManageBootcampItem";
-import store from "../../store";
-import { loadUser } from "../../actions/auth";
 
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -17,7 +15,7 @@ const ManageBootcamps = ({ isAuthenticated, bootcamp, user }) => {
     setBootcamp(objectResult);
     console.log(objectResult);
     console.log(publisherBootcamp);
-  }, []);
+  }, [bootcamp, publisherBootcamp, user._id]);
 
   // console.log(name, "bootcamp name");
   if (!isAuthenticated) {

@@ -39,7 +39,7 @@ export const getBootcamps = () => async dispatch => {
       type: GET_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    // dispatch(loadUser());
+    dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: GET_BOOTCAMP_SUCCESS_ERROR
