@@ -47,8 +47,11 @@ export const register = ({ name, email, password, role }) => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+
+    dispatch(loadUser());
+    dispatch(setAlert("You have successfully registered", "success"));
   } catch (err) {
-    const errors = err.response.data.errors;
+    const errors = err.response.data;
 
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
@@ -68,7 +71,6 @@ export const login = ({ email, password }) => async dispatch => {
   };
 
   const body = JSON.stringify({ email, password });
-  console.log(body);
 
   try {
     const res = await axios.post("/api/v1/auth/login", body, config);
@@ -76,12 +78,17 @@ export const login = ({ email, password }) => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: res.data
     });
-  } catch (err) {
-    const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
-    }
+    dispatch(loadUser());
+
+    dispatch(setAlert("You have successfully logged in", "success"));
+  } catch (err) {
+    console.log(err);
+    // const errors = err.response.data.errors;
+
+    // if (errors) {
+    //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    // }
     dispatch({
       type: LOGIN_FAIL
     });

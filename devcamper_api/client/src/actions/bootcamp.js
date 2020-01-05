@@ -13,10 +13,13 @@ import {
   UPDATE_BOOTCAMP_SUCCESS_ERROR
 } from "./types";
 
+import { loadUser } from "./auth";
+
 // GET Bootcamp by ID
 export const getBootcampbyID = _id => async dispatch => {
   try {
     const res = await axios.get(`/api/v1/bootcamps/${_id}`);
+    // dispatch(loadUser());
     dispatch({
       type: GET_SINGLE_BOOTCAMP,
       payload: res.data
@@ -36,6 +39,7 @@ export const getBootcamps = () => async dispatch => {
       type: GET_BOOTCAMP_SUCCESS,
       payload: res.data
     });
+    // dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: GET_BOOTCAMP_SUCCESS_ERROR
@@ -76,7 +80,7 @@ export const createBootcamp = (formData, history) => async dispatch => {
       type: CREATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push("/manage-bootcamps");
+    history.push("/add-course");
   } catch (err) {
     // const errors = err.response.data.errors;
     // if (errors) {

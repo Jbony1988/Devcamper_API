@@ -4,6 +4,7 @@ import {
   updateBootcamp,
   createBootcamp
 } from "../../actions/bootcamp";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 const EditBootcamp = ({
@@ -12,6 +13,7 @@ const EditBootcamp = ({
   history,
   bootcamp,
   createBootcamp,
+  isAuthenticated,
   getBootcampbyID,
   updateBootcamp
 }) => {
@@ -43,7 +45,7 @@ const EditBootcamp = ({
     acceptGi
   } = formData;
 
-  // const { location: { formattedAddress } = {}, _id } = bootcamp;
+  const { location: { formattedAddress } = {}, _id } = bootcamp;
 
   useEffect(() => {
     getBootcampbyID(match.params.id);
@@ -54,7 +56,7 @@ const EditBootcamp = ({
       website: loading || !bootcamp.website ? "" : bootcamp.website,
       phone: loading || !bootcamp.phone ? "" : bootcamp.phone,
       email: loading || !bootcamp.email ? "" : bootcamp.email,
-      address: loading || !bootcamp.address ? "" : bootcamp.address,
+      address: loading || !formattedAddress ? "" : formattedAddress,
       careers: loading || !bootcamp.careers ? "" : bootcamp.careers,
       housing: loading || !bootcamp.housing ? null : bootcamp.housing,
       jobAssistance:
@@ -66,17 +68,17 @@ const EditBootcamp = ({
   }, [
     getBootcampbyID,
     loading,
-    bootcamp.acceptGi,
-    bootcamp.address,
-    bootcamp.careers,
-    bootcamp.description,
-    bootcamp.email,
-    bootcamp.housing,
-    bootcamp.jobAssistance,
-    bootcamp.jobGurantee,
-    bootcamp.name,
-    bootcamp.phone,
-    bootcamp.website,
+    // bootcamp.acceptGi,
+    // bootcamp.address,
+    // bootcamp.careers,
+    // bootcamp.description,
+    // bootcamp.email,
+    // bootcamp.housing,
+    // bootcamp.jobAssistance,
+    // bootcamp.jobGurantee,
+    // bootcamp.name,
+    // bootcamp.phone,
+    // bootcamp.website,
     match.params.id
   ]);
 
@@ -88,6 +90,22 @@ const EditBootcamp = ({
     updateBootcamp(match.params.id, formData, history);
     // updateBootcamp(match.params.id, formData);
   };
+
+  const handleChange = e => {
+    const options = e.target.options;
+
+    //  Store course offerings in array
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        careers.push(options[i].value);
+      }
+    }
+    console.log(careers);
+  };
+  // Redirect if logged in
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Fragment>
@@ -189,14 +207,31 @@ const EditBootcamp = ({
                   </div>
                   <div class="form-group">
                     <label>Careers</label>
-                    <input
+                    <select
+                      name="careers"
+                      value={careers}
+                      multiple={true}
+                      onChange={handleChange}
+                      className="custom-select"
+                    >
+                      <option>Select all that apply</option>
+                      <option value="Web Development">Web Development</option>
+                      <option value="Mobile Development">
+                        Mobile Development
+                      </option>
+                      <option value="UI/UX">UI/UX</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Business">Business</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    {/* <input
                       type="text"
                       name="careers"
                       value={careers}
                       onChange={e => onChange(e)}
                       class="form-control"
                       placeholder="careers"
-                    />
+                    /> */}
                   </div>
                   <div class="form-check">
                     <input
@@ -290,7 +325,8 @@ const EditBootcamp = ({
 
 const mapStateToProps = state => ({
   bootcamp: state.bootcamps.bootcamp,
-  loading: state.bootcamps.loading
+  loading: state.bootcamps.loading,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, {

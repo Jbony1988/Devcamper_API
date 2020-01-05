@@ -36,26 +36,12 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       console.log(newUser);
 
       register(newUser);
-
-      // try {
-      //   const config = {
-      //     headers: {
-      //       "Content-type": "application/json"
-      //     }
-      //   };
-
-      //   const body = JSON.stringify(newUser);
-      //   const res = await axios.post("/api/v1/auth/register", body, config);
-      //   console.log(res.data);
-      // } catch (err) {
-      //   console.error(err.response.data);
-      // }
     }
   };
 
   // Redirect if logged in
   if (isAuthenticated) {
-    return <Redirect to="/manage-bootcamps" />;
+    return <Redirect to="/" />;
   }
   return (
     <Fragment>

@@ -8,6 +8,7 @@ import ManageAccount from "./components/Account/ManageAccount";
 import Bootcamps from "./components/Pages/Bootcamps/Bootcamps";
 import Reviews from "./components/Reviews/Reviews";
 import CreateBootcamp from "./components/Account/CreateBootcamp";
+import AddCourse from "./components/Courses/AddCourse";
 import EditBootcamp from "./components/Account/EditBootcamp";
 import ManageBootcamps from "./components/Account/ManageBootcamps";
 import ManageReviews from "./components/Account/ManageReviews";
@@ -67,6 +68,8 @@ const App = () => {
               path="/manage-reviews"
               component={ManageReviews}
             />
+
+            <PrivateRoute exact path="/add-course" component={ManageReviews} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/bootcamps" component={Bootcamps} />
             <Route exact path="/bootcamp/:id" component={Bootcamp} />

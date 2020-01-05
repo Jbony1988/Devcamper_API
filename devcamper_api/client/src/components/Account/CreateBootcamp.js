@@ -5,13 +5,12 @@ import { createBootcamp } from "../../actions/bootcamp";
 
 const CreateBootcamp = ({ createBootcamp }) => {
   const [formData, setFormData] = useState({
-    name: "jbbootcamp",
-    description:
-      "This is a place where you can learn about web development and more...",
-    website: "https://expediencehvac.com/",
-    phone: "7736807355",
-    email: "info@platowdesigns.com",
-    address: "8602 S Euclid Avenue, Chicago, IL 60617",
+    name: "",
+    description: "",
+    website: "",
+    phone: "",
+    email: "",
+    address: "",
     careers: [],
     housing: false,
     jobAssistance: false,
