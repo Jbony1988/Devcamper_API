@@ -10,7 +10,9 @@ import {
   CREATE_BOOTCAMP_SUCCESS,
   CREATE_BOOTCAMP_SUCCESS_ERROR,
   UPDATE_BOOTCAMP_SUCCESS,
-  UPDATE_BOOTCAMP_SUCCESS_ERROR
+  UPDATE_BOOTCAMP_SUCCESS_ERROR,
+  UPLOAD_PHOTO,
+  UPLOAD_PHOTO_ERROR
 } from "./types";
 
 import { loadUser } from "./auth";
@@ -108,7 +110,12 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
       type: UPDATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push("/manage-bootcamps");
+    history.push({
+      pathname: "/manage-courses",
+      state: {
+        bootcampId: _id
+      }
+    });
   } catch (err) {
     // const errors = err.response.data.errors;
     // if (errors) {
@@ -116,6 +123,36 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
     // }
     dispatch({
       type: UPDATE_BOOTCAMP_SUCCESS_ERROR
+    });
+  }
+};
+
+// Upload photo
+export const uploadBootcampPhoto = (_id, formData) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-type": "application/json"
+    }
+  };
+
+  const { file } = formData;
+
+  console.log(file);
+  const files = JSON.stringify(files);
+
+  try {
+    const res = await axios.put(`/api/v1/bootcamps/${_id}`, files, config);
+    dispatch({
+      type: UPLOAD_PHOTO,
+      payload: res.data
+    });
+  } catch (err) {
+    // const errors = err.response.data.errors;
+    // if (errors) {
+    //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    // }
+    dispatch({
+      type: UPLOAD_PHOTO_ERROR
     });
   }
 };

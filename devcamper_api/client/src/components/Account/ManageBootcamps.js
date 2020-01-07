@@ -3,21 +3,26 @@ import ManageBootcampNone from "../Account/ManageBootcampNone";
 import ManageBootcampItem from "../Account/ManageBootcampItem";
 
 import { connect } from "react-redux";
+import { getCourses } from "../../actions/courses";
+
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const ManageBootcamps = ({ isAuthenticated, bootcamp, user }) => {
+const ManageBootcamps = ({
+  isAuthenticated,
+  bootcamp,
+  user,
+  match,
+  getCourses
+}) => {
   const [publisherBootcamp, setBootcamp] = useState([]);
 
   useEffect(() => {
     const result = bootcamp.filter(b => b.user === user._id);
     const objectResult = result[0];
     setBootcamp(objectResult);
-    console.log(objectResult);
-    console.log(publisherBootcamp);
-  }, [bootcamp, publisherBootcamp, user._id]);
+  }, [bootcamp, publisherBootcamp]);
 
-  // console.log(name, "bootcamp name");
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
@@ -43,4 +48,4 @@ const mapStateToProps = state => ({
   bootcamp: state.bootcamps.bootcamps
 });
 
-export default connect(mapStateToProps)(ManageBootcamps);
+export default connect(mapStateToProps, { getCourses })(ManageBootcamps);

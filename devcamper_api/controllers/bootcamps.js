@@ -141,11 +141,12 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/bootcamps/:id/photo
 // @access    Private
 exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findById(req.params.id);
+  const bootcamp = await Bootcamp.findById(req.body.id);
+  // const bootcamp = await Bootcamp.findById(req.params.id);
 
   if (!bootcamp) {
     return next(
-      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`Bootcamp not found with id of ${req.body.id}`, 404)
     );
   }
 
@@ -189,7 +190,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse(`Problem with file upload`, 500));
     }
 
-    await Bootcamp.findByIdAndUpdate(req.params.id, { photo: file.name });
+    await Bootcamp.findByIdAndUpdate(req.body.id, { photo: file.name });
 
     res.status(200).json({
       success: true,

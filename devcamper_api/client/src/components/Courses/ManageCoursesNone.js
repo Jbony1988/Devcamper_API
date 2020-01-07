@@ -1,17 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const ManageCoursesNone = ({}) => {
+const ManageCoursesNone = ({ bootcamp: { _id } }) => {
   return (
-    <section class="container mt-5">
-      <div class="row">
-        <div class="col-md-8 m-auto">
-          <div class="card bg-white py-2 px-4">
-            <div class="card-body">
-              <h1 class="mb-2">Manage Courses</h1>
-              <p class="lead">You have not yet added any courses</p>
-              <a href="add-course.html" class="btn btn-primary btn-block">
+    <section className="container mt-5">
+      <div className="row">
+        <div className="col-md-8 m-auto">
+          <div className="card bg-white py-2 px-4">
+            <div className="card-body">
+              <h1 className="mb-2">Manage Courses</h1>
+              <p className="lead">You have not yet added any courses</p>
+              <Link
+                to={`/add-course/${_id}`}
+                className="btn btn-primary btn-block"
+              >
                 Add Your first course
-              </a>
+              </Link>
             </div>
           </div>
         </div>

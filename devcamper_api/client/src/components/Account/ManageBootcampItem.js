@@ -1,11 +1,45 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { uploadBootcampPhoto } from "../../actions/bootcamp";
 import { connect } from "react-redux";
 
 const ManageBootcampItem = ({
   isAuthenticated,
+  match,
+  uploadBootcampPhoto,
+  loading,
   bootcamp: { _id, name, photo, averageRating, careers }
 }) => {
+  const [formData, setFormData] = useState({
+    files: null
+  });
+
+  const { files } = formData;
+
+  const onChange = e => {
+    const files = e.target.files;
+    console.log(files);
+    const filesArr = Array.prototype.slice.call(files);
+    // const
+    console.log(filesArr);
+    // const fileObject = filesArr[0];
+    // const { name } = fileObject;
+    setFormData({ ...formData, files: files });
+  };
+
+  console.log(files);
+  useEffect(() => {
+    setFormData({
+      files: loading || photo ? null : photo
+    });
+  }, [setFormData]);
+
+  const onSubmit = e => {
+    e.preventDefault();
+    console.log(formData);
+    uploadBootcampPhoto(match.params.id, formData);
+  };
+
   // console.log(name, "bootcamp name");
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
@@ -44,13 +78,15 @@ const ManageBootcampItem = ({
                     </div>
                   </div>
                 </div>
-                <form class="mb-4">
+                <form class="mb-4" onSubmit={e => onSubmit(e)}>
                   <div class="form-group">
                     <div class="custom-file">
                       <input
                         type="file"
-                        name="photo"
-                        class="custom-file-input"
+                        name="files"
+                        // value={bootCampPhoto}
+                        onChange={onChange}
+                        className="custom-file-input"
                         id="photo"
                       />
                       <label class="custom-file-label" for="photo">
@@ -71,12 +107,17 @@ const ManageBootcampItem = ({
                   Edit Bootcamp Details
                 </Link>
 
-                <a
-                  href="manage-courses.html"
-                  class="btn btn-secondary btn-block"
+                <Link
+                  to={{
+                    pathname: "/manage-courses",
+                    state: {
+                      bootcampId: _id
+                    }
+                  }}
+                  className="btn btn-secondary btn-block"
                 >
                   Manage Courses
-                </a>
+                </Link>
                 <Link class="btn btn-danger btn-block">Remove Bootcamp</Link>
                 <p class="text-muted mt-5">
                   * You can only add one bootcamp per account.
@@ -95,7 +136,10 @@ const ManageBootcampItem = ({
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading
 });
 
-export default connect(mapStateToProps)(ManageBootcampItem);
+export default connect(mapStateToProps, { uploadBootcampPhoto })(
+  ManageBootcampItem
+);

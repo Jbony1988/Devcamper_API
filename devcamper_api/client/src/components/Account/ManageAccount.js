@@ -12,7 +12,7 @@ const ManageAccount = ({ user, isAuthenticated }) => {
   }, []);
 
   // Redirect if logged in
-  if (!isAuthenticated && user === null) {
+  if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
 

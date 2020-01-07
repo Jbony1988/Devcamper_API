@@ -43,18 +43,20 @@ const Home = () => {
 
   return (
     <Fragment>
-      <section class="showcase">
-        <div class="dark-overlay">
-          <div class="showcase-inner container">
-            <h1 class="display-4">Find a Code Bootcamp</h1>
-            <p class="lead">Find, rate and read reviews on coding bootcamps</p>
+      <section className="showcase">
+        <div className="dark-overlay">
+          <div className="showcase-inner container">
+            <h1 className="display-4">Find a Code Bootcamp</h1>
+            <p className="lead">
+              Find, rate and read reviews on coding bootcamps
+            </p>
             <form action="bootcamps.html">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       name="miles"
                       value={miles}
                       placeholder="Miles From"
@@ -62,11 +64,11 @@ const Home = () => {
                     />
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
+                <div className="col-md-6">
+                  <div className="form-group">
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       name="zipcode"
                       value={zipcode}
                       placeholder="Enter Zipcode"
@@ -76,7 +78,7 @@ const Home = () => {
                 </div>
               </div>
               <Link
-                class="btn btn-primary btn-block"
+                className="btn btn-primary btn-block"
                 to={`/bootcamps/radius/${zipcode}/${miles}`}
               >
                 Find Bootcamps
@@ -84,7 +86,7 @@ const Home = () => {
               {/* <input
                 type="submit"
                 value="Find Bootcamps"
-                class="btn btn-primary btn-block"
+                className="btn btn-primary btn-block"
               /> */}
             </form>
           </div>
