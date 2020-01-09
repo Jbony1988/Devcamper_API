@@ -58,7 +58,7 @@ const App = () => {
             />
             <PrivateRoute
               exact
-              path="/manage-bootcamps/:id"
+              path="/manage-bootcamps"
               component={ManageBootcamps}
             />
             <PrivateRoute

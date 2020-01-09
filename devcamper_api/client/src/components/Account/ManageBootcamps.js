@@ -4,6 +4,7 @@ import ManageBootcampItem from "../Account/ManageBootcampItem";
 
 import { connect } from "react-redux";
 import { getCourses } from "../../actions/courses";
+import { getBootcampbyID } from "../../actions/bootcamp";
 
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -13,11 +14,13 @@ const ManageBootcamps = ({
   bootcamp,
   user,
   match,
-  getCourses
+  getCourses,
+  getBootcampbyID
 }) => {
   const [publisherBootcamp, setBootcamp] = useState([]);
 
   useEffect(() => {
+    // getBootcampbyID(match.params.id);
     const result = bootcamp.filter(b => b.user === user._id);
     const objectResult = result[0];
     setBootcamp(objectResult);
@@ -29,11 +32,7 @@ const ManageBootcamps = ({
 
   return (
     <Fragment>
-      {!publisherBootcamp ? (
-        <ManageBootcampNone />
-      ) : (
-        <ManageBootcampItem bootcamp={publisherBootcamp} />
-      )}
+      {!publisherBootcamp ? <ManageBootcampNone /> : <ManageBootcampItem />}
     </Fragment>
   );
 };
@@ -48,4 +47,6 @@ const mapStateToProps = state => ({
   bootcamp: state.bootcamps.bootcamps
 });
 
-export default connect(mapStateToProps, { getCourses })(ManageBootcamps);
+export default connect(mapStateToProps, { getCourses, getBootcampbyID })(
+  ManageBootcamps
+);

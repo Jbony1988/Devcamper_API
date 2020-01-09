@@ -63,7 +63,7 @@ export const register = ({ name, email, password, role }) => async dispatch => {
 };
 
 // Login user
-export const login = ({ email, password }) => async dispatch => {
+export const login = ({ email, password, history }) => async dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"

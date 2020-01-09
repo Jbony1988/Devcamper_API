@@ -1,43 +1,63 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { uploadBootcampPhoto } from "../../actions/bootcamp";
+import { uploadBootcampPhoto, getBootcampbyID } from "../../actions/bootcamp";
 import { connect } from "react-redux";
 
 const ManageBootcampItem = ({
   isAuthenticated,
+  getBootcampbyID,
   match,
+  bootcamps,
+  user,
   uploadBootcampPhoto,
-  loading,
-  bootcamp: { _id, name, photo, averageRating, careers }
+  loading
+  // bootcamp: { _id, name, photo, averageRating, careers }
 }) => {
-  const [formData, setFormData] = useState({
-    files: null
-  });
+  // const [formData, setFormData] = useState({
+  //   files: null
+  // });
 
-  const { files } = formData;
+  const userBootcamp = bootcamps.filter(b => b.user === user._id);
+  const publishersBootcamp = userBootcamp[0];
+  console.log(publishersBootcamp);
+  const { _id, name, photo, averageRating, careers } = publishersBootcamp;
+
+  const [file, setFile] = useState("");
+  const [fileName, setFileName] = useState("choose file");
+  const [uploadedFile, setUploadedFile] = useState({});
+
+  // const { files } = formData;
 
   const onChange = e => {
-    const files = e.target.files;
-    console.log(files);
-    const filesArr = Array.prototype.slice.call(files);
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name);
+    console.log(file);
+    // const files = e.target.files;
+    // console.log(files);
+    // const filesArr = Array.prototype.slice.call(files);
     // const
-    console.log(filesArr);
+    // console.log("files array", filesArr);
     // const fileObject = filesArr[0];
     // const { name } = fileObject;
-    setFormData({ ...formData, files: files });
+    // setFormData({ ...formData, files: files });
   };
 
-  console.log(files);
+  // console.log(files);
   useEffect(() => {
-    setFormData({
-      files: loading || photo ? null : photo
+    getBootcampbyID(_id);
+    setFile({
+      file: loading || photo ? null : photo
     });
-  }, [setFormData]);
+  }, [setFile]);
 
   const onSubmit = e => {
+    // const { _id } = publishersBootcamp;
     e.preventDefault();
-    console.log(formData);
-    uploadBootcampPhoto(match.params.id, formData);
+    const formData = new FormData();
+    // formData.set("file", file);
+    // console.log(file, _id, formData);
+    // console.log(formData.entries());
+    uploadBootcampPhoto(_id, file);
   };
 
   // console.log(name, "bootcamp name");
@@ -78,19 +98,19 @@ const ManageBootcampItem = ({
                     </div>
                   </div>
                 </div>
-                <form class="mb-4" onSubmit={e => onSubmit(e)}>
+                <form class="mb-4" onSubmit={onSubmit}>
                   <div class="form-group">
                     <div class="custom-file">
                       <input
                         type="file"
-                        name="files"
-                        // value={bootCampPhoto}
+                        name="file"
+                        // value={file}
                         onChange={onChange}
                         className="custom-file-input"
                         id="photo"
                       />
                       <label class="custom-file-label" for="photo">
-                        Add Bootcamp Image
+                        {fileName}
                       </label>
                     </div>
                   </div>
@@ -137,9 +157,12 @@ const ManageBootcampItem = ({
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading
+  user: state.auth.user,
+  loading: state.auth.loading,
+  bootcamps: state.bootcamps.bootcamps
 });
 
-export default connect(mapStateToProps, { uploadBootcampPhoto })(
-  ManageBootcampItem
-);
+export default connect(mapStateToProps, {
+  uploadBootcampPhoto,
+  getBootcampbyID
+})(ManageBootcampItem);

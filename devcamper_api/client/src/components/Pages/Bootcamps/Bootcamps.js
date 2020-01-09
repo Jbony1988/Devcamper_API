@@ -2,7 +2,10 @@ import React, { Fragment, useEffect } from "react";
 
 import Bootcamp from "../../BootcampCard/Bootcamp";
 import Spinner from "../../Spinner/Spinner";
-import { getBootcampsByRadius } from "../../../actions/bootcamp";
+import {
+  getBootcampsByRadius,
+  getBootcampbyID
+} from "../../../actions/bootcamp";
 import { getBootcampsSelectors } from "../../../reducers/selectors";
 import { connect } from "react-redux";
 
@@ -11,6 +14,7 @@ import store from "../../../store";
 
 const Bootcamps = ({
   bootcamp: { bootcamps, loading },
+  getBootcampbyID,
   match,
   user,
   getBootcamps
@@ -180,4 +184,7 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps, { getBootcampsByRadius })(Bootcamps);
+export default connect(mapStateToProps, {
+  getBootcampsByRadius,
+  getBootcampbyID
+})(Bootcamps);

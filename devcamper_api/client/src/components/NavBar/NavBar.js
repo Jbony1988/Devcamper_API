@@ -7,9 +7,12 @@ import { logout } from "../../actions/auth";
 const NavBar = ({
   bootcamp: { _id },
   auth: { isAuthenticated, loading },
+  history,
   user,
   logout
 }) => {
+  // const { _id } = userBootcamp;
+
   return (
     <Fragment>
       <nav className="navbar navbar-expand-md navbar-dark bg-primary">
@@ -67,10 +70,7 @@ const NavBar = ({
                     <i className="fas fa-user"></i> Account
                   </a>
                   <div className="dropdown-menu">
-                    <Link
-                      className="dropdown-item"
-                      to={`/manage-bootcamps/${_id}`}
-                    >
+                    <Link className="dropdown-item" to={`/manage-bootcamps`}>
                       Manage Bootcamp
                     </Link>
                     <Link className="dropdown-item" to={"/manage-reviews"}>
