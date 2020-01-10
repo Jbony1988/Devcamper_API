@@ -131,15 +131,19 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
 export const uploadBootcampPhoto = (_id, file) => async dispatch => {
   const config = {
     headers: {
-      "Content-type": "pplication/json"
+      "Content-Type": "multipart/form-data"
     }
   };
 
-  // const Files = JSON.stringify(file);
-  console.log(file);
+  const Files = JSON.stringify(file);
+  console.log(Files);
 
   try {
-    const res = await axios.put(`/api/v1/bootcamps/${_id}/photo`, file, config);
+    const res = await axios.put(
+      `/api/v1/bootcamps/${_id}/photo`,
+      Files,
+      config
+    );
     dispatch({
       type: UPLOAD_PHOTO,
       payload: res.data
