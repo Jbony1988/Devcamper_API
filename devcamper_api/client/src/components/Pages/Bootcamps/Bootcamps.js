@@ -2,27 +2,36 @@ import React, { Fragment, useEffect } from "react";
 
 import Bootcamp from "../../BootcampCard/Bootcamp";
 import Spinner from "../../Spinner/Spinner";
-import { getBootcampsByRadius } from "../../../actions/bootcamp";
+import {
+  getBootcampsByRadius,
+  getBootcampbyID
+} from "../../../actions/bootcamp";
 import { getBootcampsSelectors } from "../../../reducers/selectors";
 import { connect } from "react-redux";
 
-import { getBootcamps } from "../../../actions/bootcamp";
+// import { getBootcamps } from "../../../actions/bootcamp";
 import store from "../../../store";
 
-const Bootcamps = ({ bootcamp: { bootcamps, loading }, match, user }) => {
-  useEffect(() => {
-    // const { zipcode, distance } = match.params;
+const Bootcamps = ({
+  bootcamp: { bootcamps, loading },
+  getBootcampbyID,
+  match,
+  user,
+  getBootcamps
+}) => {
+  // useEffect(() => {
+  // const { zipcode, distance } = match.params;
 
-    // console.log(params);
-    // const params = {
-    //   zipcode,
-    //   miles
-    // };
-    // console.log(miles, zipcode, "browsebootcamps");
-    // store.dispatch(getBootcampsByRadius(zipcode, distance));
+  // console.log(params);
+  // const params = {
+  //   zipcode,
+  //   miles
+  // };
+  // console.log(miles, zipcode, "browsebootcamps");
+  // store.dispatch(getBootcampsByRadius(zipcode, distance));
 
-    store.dispatch(getBootcamps());
-  }, []);
+  //   getBootcamps();
+  // }, [getBootcamps]);
   // const publishersBootcamp = bootcamps.filter(b => b.user === user._id);
   // console.log(publishersBootcamp, loading);
 
@@ -175,4 +184,7 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps, { getBootcampsByRadius })(Bootcamps);
+export default connect(mapStateToProps, {
+  getBootcampsByRadius,
+  getBootcampbyID
+})(Bootcamps);

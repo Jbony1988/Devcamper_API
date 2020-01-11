@@ -10,13 +10,18 @@ import {
   CREATE_BOOTCAMP_SUCCESS,
   CREATE_BOOTCAMP_SUCCESS_ERROR,
   UPDATE_BOOTCAMP_SUCCESS,
-  UPDATE_BOOTCAMP_SUCCESS_ERROR
+  UPDATE_BOOTCAMP_SUCCESS_ERROR,
+  UPLOAD_PHOTO,
+  UPLOAD_PHOTO_ERROR
 } from "./types";
+
+import { loadUser } from "./auth";
 
 // GET Bootcamp by ID
 export const getBootcampbyID = _id => async dispatch => {
   try {
     const res = await axios.get(`/api/v1/bootcamps/${_id}`);
+    // dispatch(loadUser());
     dispatch({
       type: GET_SINGLE_BOOTCAMP,
       payload: res.data
@@ -36,6 +41,7 @@ export const getBootcamps = () => async dispatch => {
       type: GET_BOOTCAMP_SUCCESS,
       payload: res.data
     });
+    dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: GET_BOOTCAMP_SUCCESS_ERROR
@@ -76,7 +82,7 @@ export const createBootcamp = (formData, history) => async dispatch => {
       type: CREATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push("/manage-bootcamps");
+    history.push("/add-course");
   } catch (err) {
     // const errors = err.response.data.errors;
     // if (errors) {
@@ -104,7 +110,12 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
       type: UPDATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push("/manage-bootcamps");
+    history.push({
+      pathname: "/manage-courses",
+      state: {
+        bootcampId: _id
+      }
+    });
   } catch (err) {
     // const errors = err.response.data.errors;
     // if (errors) {
@@ -112,6 +123,38 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
     // }
     dispatch({
       type: UPDATE_BOOTCAMP_SUCCESS_ERROR
+    });
+  }
+};
+
+// Upload photo
+export const uploadBootcampPhoto = (_id, file) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+
+  const Files = JSON.stringify(file);
+  console.log(Files);
+
+  try {
+    const res = await axios.put(
+      `/api/v1/bootcamps/${_id}/photo`,
+      Files,
+      config
+    );
+    dispatch({
+      type: UPLOAD_PHOTO,
+      payload: res.data
+    });
+  } catch (err) {
+    // const errors = err.response.data.errors;
+    // if (errors) {
+    //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    // }
+    dispatch({
+      type: UPLOAD_PHOTO_ERROR
     });
   }
 };

@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { loadUser } from "../../actions/auth";
+import store from "../../store";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
 
-const Login = ({ login, isAuthenticated, isToken }) => {
+const Login = ({ login, isAuthenticated, history }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -22,12 +24,12 @@ const Login = ({ login, isAuthenticated, isToken }) => {
       password
     };
 
-    login(userCredentials);
+    login(userCredentials, history);
   };
 
   // Redirect if logged in
   if (isAuthenticated) {
-    return <Redirect to="/manage-account" />;
+    return <Redirect to="/bootcamps" />;
   }
 
   return (

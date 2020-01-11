@@ -48,7 +48,9 @@ const Bootcamp = ({
                 {/* <!-- Avg cost --> */}
                 <p className="lead mb-4">
                   Average Course Cost:{" "}
-                  <span className="text-primary">{`$${averageCost}`}</span>
+                  <span className="text-primary">{`$${
+                    averageCost ? averageCost : "N/A"
+                  }`}</span>
                 </p>
                 {/* <!-- Courses --> */}
 

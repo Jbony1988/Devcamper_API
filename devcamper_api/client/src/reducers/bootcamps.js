@@ -10,7 +10,9 @@ import {
   BOOTCAMP_UPDATE_SUCCESS,
   BOOTCAMP_UPDATE_ERROR,
   UPDATE_BOOTCAMP_SUCCESS,
-  UPDATE_BOOTCAMP_SUCCESS_ERROR
+  UPDATE_BOOTCAMP_SUCCESS_ERROR,
+  UPLOAD_PHOTO,
+  UPLOAD_PHOTO_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -51,6 +53,7 @@ export default function(state = initialState, action) {
     case UPDATE_BOOTCAMP_SUCCESS:
     case CREATE_BOOTCAMP_SUCCESS:
     case BOOTCAMP_UPDATE_SUCCESS:
+    case UPLOAD_PHOTO:
       return {
         ...state,
         loading: false,
@@ -59,6 +62,7 @@ export default function(state = initialState, action) {
     case GET_SINGLE_BOOTCAMP_ERROR:
     case CREATE_BOOTCAMP_SUCCESS_ERROR:
     case UPDATE_BOOTCAMP_SUCCESS_ERROR:
+    case UPLOAD_PHOTO_ERROR:
       return {
         ...state,
         loading: false,
