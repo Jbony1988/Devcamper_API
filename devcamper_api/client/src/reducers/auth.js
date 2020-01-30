@@ -28,6 +28,7 @@ export default function(state = initialState, action) {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
+      Cookies.set("token", payload.token);
       return {
         ...state,
         ...payload,
@@ -38,7 +39,7 @@ export default function(state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      Cookies.remove();
+      Cookies.remove("token");
       return {
         ...state,
         user: null,

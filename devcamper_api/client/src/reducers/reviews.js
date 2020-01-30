@@ -1,4 +1,13 @@
-import { GET_REVIEWS_ERROR, GET_REVIEWS_SUCCESS } from "../actions/types";
+import {
+  GET_REVIEWS_ERROR,
+  GET_REVIEWS_SUCCESS,
+  ADD_REVIEW,
+  EDIT_REVIEWS,
+  EDIT_REVIEWS_ERROR,
+  ADD_REVIEW_ERROR,
+  GET_REVIEW,
+  GET_REVIEW_ERROR
+} from "../actions/types";
 
 const initialState = {
   reviews: [],
@@ -20,7 +29,33 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        reviewS: []
+        reviews: []
+      };
+    case ADD_REVIEW:
+    case EDIT_REVIEWS:
+      return {
+        ...state,
+        loading: false,
+        reviews: payload.data
+      };
+    case GET_REVIEW:
+      return {
+        ...state,
+        loading: false,
+        review: payload.data
+      };
+    case GET_REVIEW_ERROR:
+      return {
+        ...state,
+        loading: false,
+        review: []
+      };
+    case ADD_REVIEW_ERROR:
+    case EDIT_REVIEWS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        reviews: []
       };
     default:
       return state;

@@ -6,7 +6,10 @@ import {
   getBootcampsByRadius,
   getBootcampbyID
 } from "../../../actions/bootcamp";
-import { getBootcampsSelectors } from "../../../reducers/selectors";
+import {
+  getBootcampsSelectors,
+  getUserBootcampSelectors
+} from "../../../reducers/selectors";
 import { connect } from "react-redux";
 
 // import { getBootcamps } from "../../../actions/bootcamp";
@@ -15,6 +18,7 @@ import store from "../../../store";
 const Bootcamps = ({
   bootcamp: { bootcamps, loading },
   getBootcampbyID,
+  userBootcamp,
   match,
   user,
   getBootcamps
@@ -34,7 +38,7 @@ const Bootcamps = ({
   // }, [getBootcamps]);
   // const publishersBootcamp = bootcamps.filter(b => b.user === user._id);
   // console.log(publishersBootcamp, loading);
-
+  console.log("this is user bootcamp", userBootcamp);
   return (
     <Fragment>
       {!bootcamps || loading ? (

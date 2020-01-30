@@ -3,6 +3,7 @@ import ManageBootcampNone from "../Account/ManageBootcampNone";
 import ManageBootcampItem from "../Account/ManageBootcampItem";
 
 import { connect } from "react-redux";
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import { getCourses } from "../../actions/courses";
 import { getBootcampbyID } from "../../actions/bootcamp";
 
@@ -11,28 +12,42 @@ import PropTypes from "prop-types";
 
 const ManageBootcamps = ({
   isAuthenticated,
-  bootcamp,
+  bootcamps,
   user,
+  userBootcamp,
   match,
   getCourses,
   getBootcampbyID
 }) => {
-  const [publisherBootcamp, setBootcamp] = useState([]);
+  const publisherBootcamp = userBootcamp[0];
 
-  useEffect(() => {
-    // getBootcampbyID(match.params.id);
-    const result = bootcamp.filter(b => b.user === user._id);
-    const objectResult = result[0];
-    setBootcamp(objectResult);
-  }, [bootcamp, publisherBootcamp]);
+  console.log(publisherBootcamp, bootcamps);
+  // const { _id } = publisherBootcamp;
+  // const { role } = user;
 
-  if (!isAuthenticated) {
-    return <Redirect to="/login" />;
-  }
+  // useEffect(() => {
+  // getCourses(_id);
+  // const objectResult = result[0];
+  // setBootcamp(objectResult);
+  // const { _id } = objectResult;
+  // getCourses(_id);
+  // }, [bootcamps, getCourses]);
+
+  // if (!isAuthenticated) {
+  //   return <Redirect to="/login" />;
+  // }
+
+  // const userBootcampObject = userBootcamp[0];
+
+  console.log("Manage bootcamp page", userBootcamp);
 
   return (
     <Fragment>
-      {!publisherBootcamp ? <ManageBootcampNone /> : <ManageBootcampItem />}
+      {userBootcamp.length === 0 ? (
+        <ManageBootcampNone />
+      ) : (
+        <ManageBootcampItem />
+      )}
     </Fragment>
   );
 };
@@ -44,7 +59,8 @@ ManageBootcamps.propTypes = {
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
-  bootcamp: state.bootcamps.bootcamps
+  bootcamps: state.bootcamps.bootcamps,
+  userBootcamp: getUserBootcampSelectors(state)
 });
 
 export default connect(mapStateToProps, { getCourses, getBootcampbyID })(

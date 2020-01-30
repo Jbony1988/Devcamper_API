@@ -1,8 +1,12 @@
 import axios from "axios";
+import { setAlert } from "./alert";
+import { getReviews } from "./reviews";
 
 import {
   GET_BOOTCAMP_SUCCESS,
   GET_BOOTCAMP_SUCCESS_ERROR,
+  DELETE_BOOTCAMP_SUCCESS,
+  DELETE_BOOTCAMP_ERROR,
   GET_SINGLE_BOOTCAMP,
   GET_SINGLE_BOOTCAMP_ERROR,
   GET_BOOTCAMP_BY_RADIUS,
@@ -21,11 +25,12 @@ import { loadUser } from "./auth";
 export const getBootcampbyID = _id => async dispatch => {
   try {
     const res = await axios.get(`/api/v1/bootcamps/${_id}`);
-    // dispatch(loadUser());
+
     dispatch({
       type: GET_SINGLE_BOOTCAMP,
       payload: res.data
     });
+    dispatch(getReviews(_id));
   } catch (err) {
     dispatch({
       type: GET_SINGLE_BOOTCAMP_ERROR
@@ -82,19 +87,34 @@ export const createBootcamp = (formData, history) => async dispatch => {
       type: CREATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push("/add-course");
+    dispatch(getBootcamps());
+    dispatch(
+      setAlert("You have successfully created your bootcamp", "success")
+    );
+
+    history.push("/manage-courses");
   } catch (err) {
-    // const errors = err.response.data.errors;
-    // if (errors) {
-    //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    // if (err.response.data) {
+    //   const errorStatus = err.response.data;
+    //   const { error } = errorStatus;
+    //   dispatch(setAlert(`${error}`, "danger"));
     // }
+
+    // const errors = err.response.data.errors;
+    // console.log(" erros", errors);
+    // dispatch(setAlert(`errors`, "danger"));
+    // const error = err.response.errors;
+    // if (error) {
+    //   error.forEach(error => dispatch(setAlert(error.message, "danger")));
+    // }
+
     dispatch({
       type: CREATE_BOOTCAMP_SUCCESS_ERROR
     });
   }
 };
 
-export const updateBootcamp = (_id, formData, history) => async dispatch => {
+export const updateBootcamp = (_id, formData) => async dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"
@@ -110,44 +130,71 @@ export const updateBootcamp = (_id, formData, history) => async dispatch => {
       type: UPDATE_BOOTCAMP_SUCCESS,
       payload: res.data
     });
-    history.push({
-      pathname: "/manage-courses",
-      state: {
-        bootcampId: _id
-      }
-    });
+    dispatch(setAlert("You have successfully update your bootcamp", "success"));
+    // history.push({
+    //   pathname: "/manage-courses",
+    //   state: {
+    //     bootcampId: _id
+    //   }
+    // });
   } catch (err) {
-    // const errors = err.response.data.errors;
-    // if (errors) {
-    //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
-    // }
+    const errors = err.response;
+    console.log(errors);
+    dispatch(setAlert(`there was a problem`, "danger"));
+
     dispatch({
       type: UPDATE_BOOTCAMP_SUCCESS_ERROR
     });
   }
 };
 
-// Upload photo
-export const uploadBootcampPhoto = (_id, file) => async dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  };
-
-  const Files = JSON.stringify(file);
-  console.log(Files);
-
+// /api/v1/bootcamps/:id
+export const deleteBootcamp = (_id, history) => async dispatch => {
   try {
-    const res = await axios.put(
-      `/api/v1/bootcamps/${_id}/photo`,
-      Files,
-      config
+    const res = await axios.delete(`/api/v1/bootcamps/${_id}`);
+    dispatch({
+      type: DELETE_BOOTCAMP_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(
+      setAlert("You have successfully  deleted your bootcamp", "success")
     );
+
+    dispatch(getBootcamps());
+    history.push("/manage-bootcamp");
+  } catch (err) {
+    // dispatch(setAlert(`you have successfully deleted the bootcamp`, "danger"));
+    // if (err.response.data) {
+    //   const errorStatus = err.response.data;
+    //   const { error } = errorStatus;
+    //   dispatch(setAlert(`${error}`, "danger"));
+    // }
+
+    dispatch({
+      type: DELETE_BOOTCAMP_ERROR
+    });
+  }
+};
+
+// Upload photo
+export const uploadBootcampPhoto = (
+  _id,
+  formData,
+  history
+) => async dispatch => {
+  try {
+    const res = await axios.put(`/api/v1/bootcamps/${_id}/photo`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
     dispatch({
       type: UPLOAD_PHOTO,
       payload: res.data
     });
+    dispatch(getBootcamps());
+    history.push("/manage-bootcamp");
   } catch (err) {
     // const errors = err.response.data.errors;
     // if (errors) {

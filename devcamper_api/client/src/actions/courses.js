@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getBootcamps } from "./bootcamp";
 
 import {
   GET_COURSES_SUCCESS,
@@ -42,7 +43,9 @@ export const addCourse = (_id, formData, history) => async dispatch => {
       type: ADD_COURSE,
       payload: res.data
     });
-    history.push("/manage-account");
+    dispatch(getBootcamps());
+    dispatch(getCourses(_id));
+    history.push("/manage-course-item");
   } catch (err) {
     dispatch({
       type: ADD_COURSE_ERROR

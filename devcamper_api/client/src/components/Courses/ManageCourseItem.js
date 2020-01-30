@@ -1,10 +1,32 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { getCourses } from "../../actions/courses";
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import { Link } from "react-router-dom";
 
 const ManageCourseItem = ({
-  bootcamp: { _id, name, careers, location: { city, state } = {} },
+  userBootcamp,
+  getBootcamps,
+  getCourses,
+  bootcampCourses,
+  // bootcamp: { _id, name, careers, photo, location: { city, state } = {} },
   courses
 }) => {
+  console.log(userBootcamp, "userbootcamp");
+  const publisherBootcamp = userBootcamp[0];
+
+  const {
+    // courses,
+    _id,
+    name,
+    careers,
+    photo,
+    location: { city, state } = {}
+  } = publisherBootcamp;
+  // useEffect(() => {
+  //   getCourses(_id);
+  // }, [getCourses]);
+
   return (
     <section className="container mt-5">
       <div className="row">
@@ -12,7 +34,7 @@ const ManageCourseItem = ({
           <div className="card bg-white py-2 px-4">
             <div className="card-body">
               <Link
-                to="/manage-bootcamps"
+                to="/manage-bootcamp"
                 className="btn btn-link text-secondary my-3"
               >
                 <i className="fas fa-chevron-left"></i> Manage Bootcamp
@@ -21,7 +43,11 @@ const ManageCourseItem = ({
               <div className="card mb-3">
                 <div className="row no-gutters">
                   <div className="col-md-4">
-                    <img src="img/image_1.jpg" className="card-img" alt="..." />
+                    <img
+                      src={`http://localhost:5000/uploads/${photo}`}
+                      className="card-img"
+                      alt="..."
+                    />
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
@@ -50,29 +76,40 @@ const ManageCourseItem = ({
                 Add Bootcamp Course
               </Link>
 
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {courses.map(course => (
-                    <tr key={course._id}>
-                      <td>{course.title}</td>
-                      <td>
-                        <a href="add-course.html" className="btn btn-secondary">
-                          <i className="fas fa-pencil-alt"></i>
-                        </a>
-                        <button className="btn btn-danger">
-                          <i className="fas fa-times"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Fragment>
+                {bootcampCourses.length === 0 ? (
+                  "You have not added any courses for this bootcamp"
+                ) : (
+                  <Fragment>
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Title</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bootcampCourses.map(course => (
+                          <tr key={course._id}>
+                            <td>{course.title}</td>
+                            <td>
+                              <a
+                                href="add-course.html"
+                                className="btn btn-secondary"
+                              >
+                                <i className="fas fa-pencil-alt"></i>
+                              </a>
+                              <button className="btn btn-danger">
+                                <i className="fas fa-times"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Fragment>
+                )}
+              </Fragment>
             </div>
           </div>
         </div>
@@ -81,4 +118,9 @@ const ManageCourseItem = ({
   );
 };
 
-export default ManageCourseItem;
+const mapStateToProps = state => ({
+  userBootcamp: getUserBootcampSelectors(state),
+  bootcampCourses: state.courses.courses
+});
+
+export default connect(mapStateToProps, { getCourses })(ManageCourseItem);

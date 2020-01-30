@@ -1,13 +1,23 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { getBootcamps, getReviews } from "../../reducers/userSelectors";
+import { getBootcampbyID } from "../../actions/bootcamp";
+import ManageReviewTable from "../Reviews/ManageReviewTable";
+import { getReview } from "../../actions/reviews";
 import PropTypes from "prop-types";
 
-const ManageReviews = ({ isAuthenticated }) => {
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    return <Redirect to="/login" />;
-  }
+const ManageReviews = ({
+  user,
+
+  bootcamps,
+
+  getReview,
+  getBootcampbyID,
+  userReviews
+}) => {
+  console.log(bootcamps, user);
+  const { _id } = user;
 
   return (
     <Fragment>
@@ -17,6 +27,7 @@ const ManageReviews = ({ isAuthenticated }) => {
             <div class="card bg-white py-2 px-4">
               <div class="card-body">
                 <h1 class="mb-4">Manage Reviews</h1>
+
                 <table class="table table-striped">
                   <thead>
                     <tr>
@@ -26,30 +37,33 @@ const ManageReviews = ({ isAuthenticated }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>DevWorks Bootcamp</td>
-                      <td>10</td>
-                      <td>
-                        <a href="add-review.html" class="btn btn-secondary">
-                          <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <button class="btn btn-danger">
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Codemasters</td>
-                      <td>7</td>
-                      <td>
-                        <a href="add-review.html" class="btn btn-secondary">
-                          <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <button class="btn btn-danger">
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </td>
-                    </tr>
+                    {bootcamps.map((b, i, r) => {
+                      return (
+                        <Fragment key={i}>
+                          {b.reviews.map((r, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{r.user === _id && b.name}</td>
+                                <td>{r.user === _id && b.averageRating}</td>
+                                {r.user === _id && (
+                                  <td>
+                                    <a
+                                      href="add-review.html"
+                                      class="btn btn-secondary"
+                                    >
+                                      <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <button class="btn btn-danger">
+                                      <i class="fas fa-times"></i>
+                                    </button>
+                                  </td>
+                                )}
+                              </tr>
+                            );
+                          })}
+                        </Fragment>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -66,7 +80,13 @@ ManageReviews.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  user: state.auth.user,
+  reviews: state.reviews.reviews,
+  userBootcamp: getBootcamps(state),
+  userReviews: getReviews(state),
+  bootcamps: state.bootcamps.bootcamps
 });
 
-export default connect(mapStateToProps)(ManageReviews);
+export default connect(mapStateToProps, { getBootcampbyID, getReview })(
+  ManageReviews
+);

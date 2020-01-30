@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const PrivateRoute = ({
+const PublisherRoute = ({
   component: Component,
   auth: { isAuthenticated, loading, user },
   ...rest
@@ -14,13 +14,13 @@ const PrivateRoute = ({
       !isAuthenticated && !loading ? (
         <Redirect to="/login" />
       ) : (
-        <Component {...props} />
+        Object.values(user).includes("publisher") && <Component {...props} />
       )
     }
   />
 );
 
-PrivateRoute.propTypes = {
+PublisherRoute.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -28,4 +28,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(PublisherRoute);

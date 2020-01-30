@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { createBootcamp } from "../../actions/bootcamp";
 
-const CreateBootcamp = ({ createBootcamp }) => {
+const CreateBootcamp = ({ createBootcamp, history }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -38,20 +38,27 @@ const CreateBootcamp = ({ createBootcamp }) => {
   const onSubmit = e => {
     e.preventDefault();
     console.log(formData);
-    createBootcamp(formData);
+    createBootcamp(formData, history);
   };
 
   const handleChange = e => {
-    const options = e.target.options;
+    let value = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData({ ...formData, [e.target.name]: value });
 
-    //  Store course offerings in array
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        careers.push(options[i].value);
-      }
-    }
     console.log(careers);
   };
+
+  // const handleChange = e => {
+  //   const options = e.target.options;
+
+  //   //  Store course offerings in array
+  //   for (let i = 0, l = options.length; i < l; i++) {
+  //     if (options[i].selected) {
+  //       careers.push(options[i].value);
+  //     }
+  //   }
+  //   console.log(careers);
+  // };
 
   console.log("this is the course", careers);
   return (
