@@ -1,11 +1,7 @@
-import React, { Fragment, useState, useEffect } from "react";
-import ManageCourseItem from "./ManageCourseItem";
-import { getCourses } from "../../actions/courses";
+import React, { Fragment, useEffect } from "react";
+
 import { getBootcampbyID, getBootcamps } from "../../actions/bootcamp";
-import {
-  getUserBootcampSelectors,
-  getCoursesSection
-} from "../../reducers/selectors";
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import Spinner from "../Spinner/Spinner";
 import ManageCoursesNone from "./ManageCoursesNone";
 import { connect } from "react-redux";

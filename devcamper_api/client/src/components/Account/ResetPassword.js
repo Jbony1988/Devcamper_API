@@ -1,7 +1,24 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { forgotPassword } from "../../actions/auth";
+import { connect } from "react-redux";
 
-const ResetPassword = () => {
+const ResetPassword = ({ forgotPassword }) => {
+  const [formData, setFormData] = useState({
+    email: ""
+  });
+
+  const { email } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    // console.log(email);
+    forgotPassword(formData);
+  };
+
   return (
     <section class="container mt-5">
       <div class="row">
@@ -15,13 +32,15 @@ const ResetPassword = () => {
                 Use this form to reset your password using the registered email
                 address.
               </p>
-              <form>
+              <form onSubmit={e => onSubmit(e)}>
                 <div class="form-group">
                   <label>Enter Email</label>
                   <input
                     type="email"
                     name="email"
                     class="form-control"
+                    onChange={e => onChange(e)}
+                    value={email}
                     placeholder="Email address"
                   />
                 </div>
@@ -42,4 +61,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default connect(null, { forgotPassword })(ResetPassword);

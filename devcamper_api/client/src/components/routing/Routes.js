@@ -46,33 +46,33 @@ const Routes = ({ user }) => {
       <Switch>
         <PrivateRoute exact path="/manage-account" component={ManageAccount} />
 
-        {/* <PublisherRoute
+        <PublisherRoute
           exact
           path="/manage-bootcamp"
           component={ManageBootcamps}
-        /> */}
+        />
 
-        {/* <PublisherRoute
+        <PublisherRoute
           exact
           path="/create-bootcamp"
           component={CreateBootcamp}
-        /> */}
+        />
         <UserRoute exact path="/manage-reviews" component={ManageReviews} />
 
-        {/* <PublisherRoute
+        <PublisherRoute
           exact
           path="/manage-course-item"
           component={ManageCourseItem}
-        /> */}
+        />
 
-        {/* <PublisherRoute exact path="/add-course/:id" component={AddCourse} />
+        <PublisherRoute exact path="/add-course/:id" component={AddCourse} />
         <UserRoute exact path="/add-review/:id" component={AddReview} />
         <UserRoute exact path="/edit-review/:id" component={EditReviews} />
         <PublisherRoute
           exact
           path="/manage-courses"
           component={ManageCourses}
-        /> */}
+        />
         <Route exact path="/register" component={Register} />
         <Route exact path="/bootcamps" component={Bootcamps} />
         <Route exact path="/bootcamp/:id" component={Bootcamp} />

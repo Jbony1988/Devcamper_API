@@ -8,8 +8,10 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGOUT,
-  FORGOT_PASSWORD_SUCCESS,
-  FORGOT_PASSWORD_SUCCESS_ERROR
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  FORGOT_PASSWORD,
+  FORGOT_PASSWORD_ERROR
 } from "./types";
 import setAuthCookie from "../utils/setAuthCookie";
 
@@ -104,24 +106,50 @@ export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
 };
 
-export const forgotPassword = ({ email }) => async dispatch => {
+export const forgotPassword = formData => async dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"
     }
   };
 
-  const body = JSON.stringify({ email });
-
+  const body = JSON.stringify(formData);
+  console.log(body);
   try {
-    const res = await axios.post("/api/v1/auth/me", body, config);
+    const res = await axios.post("/api/v1/auth/forgotpassword", body, config);
     dispatch({
-      type: FORGOT_PASSWORD_SUCCESS,
+      type: FORGOT_PASSWORD,
       payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: FORGOT_PASSWORD_SUCCESS_ERROR
+      type: FORGOT_PASSWORD_ERROR
+    });
+  }
+};
+
+export const resetPassword = (resetToken, newPassword) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify(newPassword);
+  console.log(body);
+  try {
+    const res = await axios.put(
+      `/api/v1/auth/resetpassword/${resetToken}`,
+      body,
+      config
+    );
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RESET_PASSWORD_ERROR
     });
   }
 };

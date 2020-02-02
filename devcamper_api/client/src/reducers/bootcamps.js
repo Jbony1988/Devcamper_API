@@ -35,7 +35,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        bootcamps: payload.data
+        bootcamp: payload.data
       };
     case GET_BOOTCAMP_BY_RADIUS_ERROR:
       return {

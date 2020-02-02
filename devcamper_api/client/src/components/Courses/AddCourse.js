@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { getUserBootcampSelectors } from "../../reducers/selectors";
 import { addCourse } from "../../actions/courses";
@@ -94,6 +94,7 @@ const AddCourse = ({ bootcamp, history, addCourse, userBootcamp }) => {
                     name="minimumSkill"
                     className="form-control"
                   >
+                    <option>Choose a difficulty level</option>
                     <option value="beginner">Beginner (Any)</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>

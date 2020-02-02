@@ -85,7 +85,7 @@ const Login = ({ login, isAuthenticated, history }) => {
                   <p>
                     {" "}
                     Forgot Password?{" "}
-                    <Link to="/reset-password">Reset Password</Link>
+                    <Link to="/forgotpassword">Reset Password</Link>
                   </p>
                 </div>
               </div>

@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { getBootcamps, getReviews } from "../../reducers/userSelectors";
 import { getBootcampbyID } from "../../actions/bootcamp";
-import ManageReviewTable from "../Reviews/ManageReviewTable";
 import { getReview } from "../../actions/reviews";
 import PropTypes from "prop-types";
 

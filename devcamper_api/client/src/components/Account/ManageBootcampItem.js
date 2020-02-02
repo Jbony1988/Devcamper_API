@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
-import axios from "axios";
+import React, { Fragment, useState } from "react";
 import { getUserBootcampSelectors } from "../../reducers/selectors";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   uploadBootcampPhoto,
   getBootcampbyID,
@@ -31,14 +30,7 @@ const ManageBootcampItem = ({
   const [file, setFile] = useState();
 
   const [fileName, setFileName] = useState("choose file");
-  const [uploadedFile, setUploadedFile] = useState({});
-
-  // useEffect(() => {
-  //   getBootcampbyID(_id);
-  //   setFile({
-  //     file: loading || photo ? null : photo
-  //   });
-  // }, [setFile]);
+  // const [uploadedFile, setUploadedFile] = useState({});
 
   const onChange = e => {
     setFile(e.target.files[0]);
@@ -54,7 +46,7 @@ const ManageBootcampItem = ({
     uploadBootcampPhoto(_id, formData, history);
   };
 
-  console.log(uploadedFile);
+  // console.log(uploadedFile);
 
   const onDeleteBootcamp = () => {
     deleteBootcamp(_id, history);

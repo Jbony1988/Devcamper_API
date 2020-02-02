@@ -5,7 +5,7 @@ import Login from "./components/Auth/Login";
 import ResetPassword from "./components/Account/ResetPassword";
 
 import Routes from "./components/routing/Routes";
-
+import Alert from "./components/Alert/Alert";
 import { loadUser } from "./actions/auth";
 
 // Redux
@@ -13,7 +13,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Home from "./components/Pages/Home/Home";
-
+import UpdatePassword from "./components/Account/UpdatePassword";
 import { getBootcamps } from "./actions/bootcamp";
 
 import "./App.css";
@@ -36,10 +36,12 @@ const App = ({ user }) => {
       <Router>
         <Fragment>
           <NavBar />
+          <Alert />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/reset-password" component={ResetPassword} />
+            <Route exact path="/reset/:resetToken" component={UpdatePassword} />
+            <Route exact path="/forgotpassword" component={ResetPassword} />
             <Route component={Routes} />
           </Switch>
         </Fragment>

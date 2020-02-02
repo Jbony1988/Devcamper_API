@@ -55,9 +55,11 @@ export const getBootcamps = () => async dispatch => {
 };
 
 // GET ALL BOOTCAMPS
-export const getBootcampsByRadius = (zipcode, miles) => async dispatch => {
+export const getBootcampsByRadius = (zipcode, distance) => async dispatch => {
   try {
-    const res = await axios.get(`/api/v1/bootcamps/radius/${zipcode}/${miles}`);
+    const res = await axios.get(
+      `/api/v1/bootcamps/radius/${zipcode}/${distance}`
+    );
     dispatch({
       type: GET_BOOTCAMP_BY_RADIUS,
       payload: res.data

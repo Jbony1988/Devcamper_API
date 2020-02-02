@@ -4,15 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
 
-const NavBar = ({
-  bootcamp,
-  auth: { isAuthenticated, loading },
-  history,
-  user,
-  logout
-}) => {
-  // const { _id } = userBootcamp;
-
+const NavBar = ({ auth: { isAuthenticated, loading }, user, logout }) => {
   return (
     <Fragment>
       <nav className="navbar navbar-expand-md navbar-dark bg-primary">
@@ -71,16 +63,15 @@ const NavBar = ({
                   </a>
                   <div className="dropdown-menu">
                     <Fragment>
-                      {Object.values(user).includes("publisher") && (
-                        <Link className="dropdown-item" to="/manage-bootcamp">
-                          Manage Bootcamp
-                        </Link>
-                      )}
+                      <Link className="dropdown-item" to="/manage-bootcamp">
+                        Manage Bootcamp
+                      </Link>
                     </Fragment>
 
                     <Link className="dropdown-item" to={"/manage-reviews"}>
                       Manage Reviews
                     </Link>
+
                     <Link className="dropdown-item" to={"/manage-account"}>
                       Manage Account
                     </Link>

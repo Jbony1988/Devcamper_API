@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import ManageBootcampNone from "../Account/ManageBootcampNone";
 import ManageBootcampItem from "../Account/ManageBootcampItem";
 
@@ -7,7 +7,6 @@ import { getUserBootcampSelectors } from "../../reducers/selectors";
 import { getCourses } from "../../actions/courses";
 import { getBootcampbyID } from "../../actions/bootcamp";
 
-import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ManageBootcamps = ({

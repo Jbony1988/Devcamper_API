@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { getCourses } from "../../actions/courses";
 import { getUserBootcampSelectors } from "../../reducers/selectors";

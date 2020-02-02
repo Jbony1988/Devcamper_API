@@ -1,45 +1,46 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { getBootcampsByRadius } from "../../../actions/bootcamp";
 
-const Home = () => {
+const Home = ({ getBootcampsByRadius }) => {
   const [formData, setFormData] = useState({
-    miles: "",
+    distance: "",
     zipcode: ""
   });
 
   const [findBootCampsWithRadius, setRadius] = useState(false);
 
-  const { miles, zipcode } = formData;
+  const { distance, zipcode } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
-    const radius = {
-      miles,
-      zipcode
-    };
-
+    // const radius = {
+    //   miles,
+    //   zipcode
+    // };
+    getBootcampsByRadius(zipcode, distance);
     setRadius(true);
-
-    console.log(miles, zipcode);
   };
 
-  const coordinates = {
-    miles,
-    zipcode
-  };
-  // if (findBootCampsWithRadius === true) {
-  //   return (
-  //     <Redirect
-  //       to={{
-  //         pathname: "/bootcamps",
-  //         params: { miles: miles, zipcode: zipcode }
-  //       }}
-  //     />
-  //   );
-  // }
+  // const coordinates = {
+  //   miles,
+  //   zipcode
+  // };
+  console.log(distance, zipcode);
+  if (findBootCampsWithRadius === true) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/bootcamps",
+          params: { distance: distance, zipcode: zipcode }
+        }}
+      />
+    );
+  }
 
   return (
     <Fragment>
@@ -50,15 +51,15 @@ const Home = () => {
             <p className="lead">
               Find, rate and read reviews on coding bootcamps
             </p>
-            <form action="bootcamps.html">
+            <form action="bootcamps.html" onSubmit={e => onSubmit(e)}>
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
                     <input
                       type="text"
                       className="form-control"
-                      name="miles"
-                      value={miles}
+                      name="distance"
+                      value={distance}
                       placeholder="Miles From"
                       onChange={e => onChange(e)}
                     />
@@ -79,7 +80,7 @@ const Home = () => {
               </div>
               <Link
                 className="btn btn-primary btn-block"
-                to={`/bootcamps/radius/${zipcode}/${miles}`}
+                to={`/bootcamps/radius/${zipcode}/${distance}`}
               >
                 Find Bootcamps
               </Link>
@@ -95,4 +96,4 @@ const Home = () => {
     </Fragment>
   );
 };
-export default Home;
+export default connect(null, { getBootcampsByRadius })(Home);
