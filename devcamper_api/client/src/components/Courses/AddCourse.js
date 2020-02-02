@@ -1,15 +1,16 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import { addCourse } from "../../actions/courses";
 
-const AddCourse = ({ bootcamp: { _id }, match, history, addCourse }) => {
+const AddCourse = ({ bootcamp, history, addCourse, userBootcamp }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     weeks: null,
     tuition: null,
     minimumSkill: "",
-    scholarhipsAvailable: false
+    scholarShipsAvailable: false
   });
 
   const {
@@ -18,15 +19,19 @@ const AddCourse = ({ bootcamp: { _id }, match, history, addCourse }) => {
     weeks,
     tuition,
     minimumSkill,
-    scholarhipsAvailable
+    scholarShipsAvailable
   } = formData;
+  console.log(userBootcamp);
 
+  const publisherBootcamp = userBootcamp[0];
+  console.log(publisherBootcamp);
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   // console.log(name);
   const onSubmit = e => {
     e.preventDefault();
-    addCourse(match.params.id, formData, history);
+    const { _id } = publisherBootcamp;
+    addCourse(_id, formData, history);
     console.log(formData);
   };
   return (
@@ -89,9 +94,8 @@ const AddCourse = ({ bootcamp: { _id }, match, history, addCourse }) => {
                     name="minimumSkill"
                     className="form-control"
                   >
-                    <option value="beginner" selected>
-                      Beginner (Any)
-                    </option>
+                    <option>Choose a difficulty level</option>
+                    <option value="beginner">Beginner (Any)</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
                   </select>
@@ -112,15 +116,15 @@ const AddCourse = ({ bootcamp: { _id }, match, history, addCourse }) => {
                 </div>
                 <div className="form-check">
                   <input
-                    checked={scholarhipsAvailable}
+                    checked={scholarShipsAvailable}
                     className="form-check-input"
                     type="checkbox"
-                    name="scholarshipAvailable"
+                    name="scholarShipsAvailable"
                     id="scholarshipAvailable"
                     onChange={() =>
                       setFormData({
                         ...formData,
-                        scholarhipsAvailable: !scholarhipsAvailable
+                        scholarShipsAvailable: !scholarShipsAvailable
                       })
                     }
                   />
@@ -148,7 +152,8 @@ const AddCourse = ({ bootcamp: { _id }, match, history, addCourse }) => {
 };
 
 const mapStateToProps = state => ({
-  bootcamp: state.bootcamps.bootcamp
+  bootcamp: state.bootcamps.bootcamp,
+  userBootcamp: getUserBootcampSelectors(state)
 });
 
 export default connect(mapStateToProps, { addCourse })(AddCourse);

@@ -4,8 +4,9 @@ import {
   updateBootcamp,
   createBootcamp
 } from "../../actions/bootcamp";
+
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import Spinner from "../Spinner/Spinner";
-import { bootcamp } from "../../reducers/bootcamps";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -13,12 +14,25 @@ const EditBootcamp = ({
   match,
   loading,
   user,
-  history,
-  bootcamp,
+  loggedInUserBootcamp,
   isAuthenticated,
   getBootcampbyID,
   updateBootcamp
 }) => {
+  console.log(loggedInUserBootcamp);
+  const publisherBootcamp = loggedInUserBootcamp[0];
+  // const {
+  //   name,
+  // description,
+  // website,
+  // phone,
+  // email,
+  // address,
+  // careers,
+  // housing,
+  // jobAssistance,
+  // jobGuarantee,
+  // acceptGi } = publisherBootcamp;
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -33,26 +47,41 @@ const EditBootcamp = ({
     acceptGi: false
   });
 
-  const { location: { formattedAddress } = {} } = bootcamp;
+  const { location: { formattedAddress } = {}, _id } = publisherBootcamp;
 
   const getUserBootcamp = useCallback(() => {
-    getBootcampbyID(match.params.id);
+    // getBootcampbyID(match.params.id);
     setFormData({
-      name: loading || !bootcamp.name ? "" : bootcamp.name,
-      description: loading || !bootcamp.description ? "" : bootcamp.description,
-      website: loading || !bootcamp.website ? "" : bootcamp.website,
-      phone: loading || !bootcamp.phone ? "" : bootcamp.phone,
-      email: loading || !bootcamp.email ? "" : bootcamp.email,
+      name: loading || !publisherBootcamp.name ? "" : publisherBootcamp.name,
+      description:
+        loading || !publisherBootcamp.description
+          ? ""
+          : publisherBootcamp.description,
+      website:
+        loading || !publisherBootcamp.website ? "" : publisherBootcamp.website,
+      phone: loading || !publisherBootcamp.phone ? "" : publisherBootcamp.phone,
+      email: loading || !publisherBootcamp.email ? "" : publisherBootcamp.email,
       address: loading || !formattedAddress ? "" : formattedAddress,
-      careers: loading || !bootcamp.careers ? "" : bootcamp.careers,
-      housing: loading || !bootcamp.housing ? false : bootcamp.housing,
+      careers:
+        loading || !publisherBootcamp.careers ? "" : publisherBootcamp.careers,
+      housing:
+        loading || !publisherBootcamp.housing
+          ? false
+          : publisherBootcamp.housing,
       jobAssistance:
-        loading || !bootcamp.jobAssistance ? false : bootcamp.jobAssistance,
+        loading || !publisherBootcamp.jobAssistance
+          ? false
+          : publisherBootcamp.jobAssistance,
       jobGuarantee:
-        loading || !bootcamp.jobGuarantee ? false : bootcamp.jobGuarantee,
-      acceptGi: loading || !bootcamp.acceptGi ? false : bootcamp.acceptGi
+        loading || !publisherBootcamp.jobGuarantee
+          ? false
+          : publisherBootcamp.jobGuarantee,
+      acceptGi:
+        loading || !publisherBootcamp.acceptGi
+          ? false
+          : publisherBootcamp.acceptGi
     });
-  }, [loading, match, getBootcampbyID]);
+  }, [loading, match]);
 
   useEffect(() => {
     getUserBootcamp();
@@ -78,9 +107,10 @@ const EditBootcamp = ({
   const onSubmit = e => {
     e.preventDefault();
 
-    updateBootcamp(match.params.id, formData, history);
+    updateBootcamp(_id, formData);
   };
 
+  // handle multiple select optionsn
   const handleChange = e => {
     let value = Array.from(e.target.selectedOptions, option => option.value);
     setFormData({ ...formData, [e.target.name]: value });
@@ -313,7 +343,7 @@ const EditBootcamp = ({
 };
 
 const mapStateToProps = state => ({
-  bootcamp: state.bootcamps.bootcamp,
+  loggedInUserBootcamp: getUserBootcampSelectors(state),
   loading: state.bootcamps.loading,
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user

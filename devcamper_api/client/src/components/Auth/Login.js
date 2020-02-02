@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { loadUser } from "../../actions/auth";
 import store from "../../store";
@@ -24,12 +24,12 @@ const Login = ({ login, isAuthenticated, history }) => {
       password
     };
 
-    login(userCredentials, history);
+    login(userCredentials);
   };
 
   // Redirect if logged in
   if (isAuthenticated) {
-    return <Redirect to="/bootcamps" />;
+    return <Redirect to="/" />;
   }
 
   return (
@@ -85,7 +85,7 @@ const Login = ({ login, isAuthenticated, history }) => {
                   <p>
                     {" "}
                     Forgot Password?{" "}
-                    <a href="reset-password.html">Reset Password</a>
+                    <Link to="/forgotpassword">Reset Password</Link>
                   </p>
                 </div>
               </div>

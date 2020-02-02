@@ -4,15 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
 
-const NavBar = ({
-  bootcamp: { _id },
-  auth: { isAuthenticated, loading },
-  history,
-  user,
-  logout
-}) => {
-  // const { _id } = userBootcamp;
-
+const NavBar = ({ auth: { isAuthenticated, loading }, user, logout }) => {
   return (
     <Fragment>
       <nav className="navbar navbar-expand-md navbar-dark bg-primary">
@@ -70,24 +62,28 @@ const NavBar = ({
                     <i className="fas fa-user"></i> Account
                   </a>
                   <div className="dropdown-menu">
-                    <Link className="dropdown-item" to={`/manage-bootcamps`}>
-                      Manage Bootcamp
-                    </Link>
+                    <Fragment>
+                      <Link className="dropdown-item" to="/manage-bootcamp">
+                        Manage Bootcamp
+                      </Link>
+                    </Fragment>
+
                     <Link className="dropdown-item" to={"/manage-reviews"}>
                       Manage Reviews
                     </Link>
+
                     <Link className="dropdown-item" to={"/manage-account"}>
                       Manage Account
                     </Link>
 
-                    <div class="dropdown-divider"></div>
+                    <div className="dropdown-divider"></div>
                     <Link onClick={logout} className="dropdown-item">
-                      <i class="fas fa-sign-out-alt"></i> Logout
+                      <i className="fas fa-sign-out-alt"></i> Logout
                     </Link>
                   </div>
                 </li>
-                <li class="nav-item d-none d-sm-block">
-                  <Link class="nav-link" href="#/">
+                <li className="nav-item d-none d-sm-block">
+                  <Link className="nav-link" href="#/">
                     |
                   </Link>
                 </li>

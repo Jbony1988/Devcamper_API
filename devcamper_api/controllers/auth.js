@@ -151,8 +151,12 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const resetUrl = `${req.protocol}://${req.get(
     "host"
   )}/api/v1/auth/resetpassword/${resetToken}`;
-
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+  const message =
+    "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+    "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
+    `http://localhost:3000/reset/${resetToken}\n\n` +
+    "If you did not request this, please ignore this email and your password will remain unchanged.\n";
+  // const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
   try {
     await sendEmail({

@@ -7,7 +7,11 @@ import {
   LOGIN_FAIL,
   USER_LOADED,
   AUTH_ERROR,
-  LOGOUT
+  LOGOUT,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  FORGOT_PASSWORD,
+  FORGOT_PASSWORD_ERROR
 } from "./types";
 import setAuthCookie from "../utils/setAuthCookie";
 
@@ -63,7 +67,7 @@ export const register = ({ name, email, password, role }) => async dispatch => {
 };
 
 // Login user
-export const login = ({ email, password, history }) => async dispatch => {
+export const login = ({ email, password }) => async dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"
@@ -85,7 +89,9 @@ export const login = ({ email, password, history }) => async dispatch => {
   } catch (err) {
     console.log(err);
     // const errors = err.response.data.errors;
-
+    dispatch(
+      setAlert("Please enter the correct username or password", "danger")
+    );
     // if (errors) {
     //   errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     // }
@@ -98,4 +104,52 @@ export const login = ({ email, password, history }) => async dispatch => {
 // Logout clear profile
 export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
+};
+
+export const forgotPassword = formData => async dispatch => {
+  const config = {
+    headers: {
+      "Content-type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify(formData);
+  console.log(body);
+  try {
+    const res = await axios.post("/api/v1/auth/forgotpassword", body, config);
+    dispatch({
+      type: FORGOT_PASSWORD,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: FORGOT_PASSWORD_ERROR
+    });
+  }
+};
+
+export const resetPassword = (resetToken, newPassword) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify(newPassword);
+  console.log(body);
+  try {
+    const res = await axios.put(
+      `/api/v1/auth/resetpassword/${resetToken}`,
+      body,
+      config
+    );
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RESET_PASSWORD_ERROR
+    });
+  }
 };

@@ -22,6 +22,19 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
   }
 });
 
+// @desc Get reviews
+// @route GET/api/v1/all-reviews
+
+// @access Public
+exports.getAllReviews = asyncHandler(async (req, res, next) => {
+  const reviews = await Review.find();
+  if (reviews) {
+    return res.status(200).json();
+  } else {
+    res.status(200).json(res.advancedResults);
+  }
+});
+
 // @desc      Get single review
 // @route     GET /api/v1/reviews/:id
 // @access    Public

@@ -7,10 +7,10 @@ import {
   GET_BOOTCAMP_BY_RADIUS_ERROR,
   GET_BOOTCAMP_BY_RADIUS,
   GET_SINGLE_BOOTCAMP_ERROR,
-  BOOTCAMP_UPDATE_SUCCESS,
   BOOTCAMP_UPDATE_ERROR,
   UPDATE_BOOTCAMP_SUCCESS,
   UPDATE_BOOTCAMP_SUCCESS_ERROR,
+  DELETE_BOOTCAMP_ERROR,
   UPLOAD_PHOTO,
   UPLOAD_PHOTO_ERROR
 } from "../actions/types";
@@ -35,7 +35,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        bootcamps: payload.data
+        bootcamp: payload.data
       };
     case GET_BOOTCAMP_BY_RADIUS_ERROR:
       return {
@@ -52,7 +52,6 @@ export default function(state = initialState, action) {
     case GET_SINGLE_BOOTCAMP:
     case UPDATE_BOOTCAMP_SUCCESS:
     case CREATE_BOOTCAMP_SUCCESS:
-    case BOOTCAMP_UPDATE_SUCCESS:
     case UPLOAD_PHOTO:
       return {
         ...state,
@@ -69,6 +68,7 @@ export default function(state = initialState, action) {
         bootcamp: []
       };
     case BOOTCAMP_UPDATE_ERROR:
+    case DELETE_BOOTCAMP_ERROR:
       return {
         ...state,
         loading: false

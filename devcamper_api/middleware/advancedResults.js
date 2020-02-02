@@ -42,7 +42,14 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (populate) {
+  // Check if populate is an array
+  const isPopulateArray = Array.isArray(populate);
+
+  if (populate && isPopulateArray) {
+    populate.forEach(field => {
+      query = query.populate(field);
+    });
+  } else {
     query = query.populate(populate);
   }
 

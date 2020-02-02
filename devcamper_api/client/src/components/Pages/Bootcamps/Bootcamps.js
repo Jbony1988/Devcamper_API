@@ -8,33 +8,30 @@ import {
 } from "../../../actions/bootcamp";
 import { getBootcampsSelectors } from "../../../reducers/selectors";
 import { connect } from "react-redux";
-
-// import { getBootcamps } from "../../../actions/bootcamp";
 import store from "../../../store";
 
 const Bootcamps = ({
   bootcamp: { bootcamps, loading },
   getBootcampbyID,
+  userBootcamp,
   match,
   user,
+  getBootcampsByRadius,
   getBootcamps
 }) => {
-  // useEffect(() => {
-  // const { zipcode, distance } = match.params;
+  useEffect(() => {
+    const { zipcode, distance } = match.params;
+    // console.log(params);
+    // const params = {
+    //   zipcode,
+    //   miles
+    // };
 
-  // console.log(params);
-  // const params = {
-  //   zipcode,
-  //   miles
-  // };
-  // console.log(miles, zipcode, "browsebootcamps");
-  // store.dispatch(getBootcampsByRadius(zipcode, distance));
-
-  //   getBootcamps();
-  // }, [getBootcamps]);
+    getBootcampsByRadius(zipcode, distance);
+  }, [getBootcampsByRadius]);
   // const publishersBootcamp = bootcamps.filter(b => b.user === user._id);
-  // console.log(publishersBootcamp, loading);
-
+  // // console.log(publishersBootcamp, loading);
+  // console.log("this is user bootcamp", userBootcamp);
   return (
     <Fragment>
       {!bootcamps || loading ? (
@@ -136,9 +133,19 @@ const Bootcamps = ({
               </div>
               {/* <!-- Main col --> */}
               <div class="col-md-8">
-                {bootcamps.map(bootcamp => (
-                  <Bootcamp key={bootcamp._id} bootcamp={bootcamp} />
-                ))}
+                <Fragment>
+                  {bootcamps.length === 0 && (
+                    <h2 style={{ marginBottom: 50 }}>
+                      No Bootcamps have been published
+                    </h2>
+                  )}
+                </Fragment>
+
+                <Fragment>
+                  {bootcamps.map(bootcamp => (
+                    <Bootcamp key={bootcamp._id} bootcamp={bootcamp} />
+                  ))}
+                </Fragment>
 
                 {/* <!-- Pagination --> */}
                 <nav aria-label="Page navigation example">

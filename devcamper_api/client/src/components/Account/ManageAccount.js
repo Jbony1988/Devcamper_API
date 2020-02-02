@@ -2,11 +2,12 @@ import React, { Fragment, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { loadUser } from "../../actions/auth";
+import { getUser } from "../../reducers/userSelectors";
 import store from "../../store";
 import Spinner from "../Spinner/Spinner";
 import PropTypes from "prop-types";
 
-const ManageAccount = ({ user, isAuthenticated, loading }) => {
+const ManageAccount = ({ user, isAuthenticated, loading, loggedUser }) => {
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
@@ -16,7 +17,10 @@ const ManageAccount = ({ user, isAuthenticated, loading }) => {
     return <Redirect to="/login" />;
   }
 
-  const { name, email } = user;
+  console.log(loggedUser);
+  const { name, email } = loggedUser;
+
+  // const { name, email } = user;
 
   return (
     <Fragment>
@@ -90,7 +94,8 @@ ManageAccount.propTypes = {
 const mapStateToProps = state => ({
   user: state.auth.user,
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading
+  loading: state.auth.loading,
+  loggedUser: getUser(state)
 });
 
 export default connect(mapStateToProps)(ManageAccount);

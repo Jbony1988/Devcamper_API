@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const PrivateRoute = ({
   component: Component,
-  auth: { isAuthenticated, loading },
+  auth: { isAuthenticated, loading, user },
   ...rest
 }) => (
   <Route

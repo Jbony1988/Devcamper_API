@@ -1,49 +1,37 @@
-import React, { Fragment, useState, useEffect } from "react";
-import ManageCourseItem from "./ManageCourseItem";
-import { getCourses } from "../../actions/courses";
-import { getBootcampbyID } from "../../actions/bootcamp";
+import React, { Fragment, useEffect } from "react";
+
+import { getBootcampbyID, getBootcamps } from "../../actions/bootcamp";
+import { getUserBootcampSelectors } from "../../reducers/selectors";
 import Spinner from "../Spinner/Spinner";
 import ManageCoursesNone from "./ManageCoursesNone";
 import { connect } from "react-redux";
 
-const ManageCourses = ({
-  bootcamp,
-  courses,
-  location,
-  getCourses,
-  loading,
-  getBootcampbyID
-}) => {
+const ManageCourses = ({ bootcamps, user, getBootcamps, userBootcamp }) => {
+  const publisherBootcamp = userBootcamp.filter(b => b.user === user._id);
+  console.log(publisherBootcamp, "userbootcamp");
+  // const publisherBootcamp = userBootcamp[0];
+  // const { courses } = publisherBootcamp;
+  // console.log(courses, "courses");
+
   useEffect(() => {
-    getCourses(location.state.bootcampId);
-    getBootcampbyID(location.state.bootcampId);
-  }, [getCourses, getBootcampbyID]);
+    getBootcamps();
+  }, [getBootcamps]);
 
   return (
     <Fragment>
-      {courses.length <= 0 && (
-        <Fragment>
-          {loading ? <Spinner /> : <ManageCoursesNone bootcamp={bootcamp} />}
-        </Fragment>
-      )}
-      <Fragment>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <ManageCourseItem bootcamp={bootcamp} courses={courses} />
-        )}
-      </Fragment>
+      <ManageCoursesNone bootcamp={publisherBootcamp} />
     </Fragment>
   );
 };
 
 const mapStateToProps = state => ({
   courses: state.courses.courses,
+  user: state.auth.user,
   isAutheniticated: state.auth.isAutheniticated,
-  loading: state.auth.loading,
-  bootcamp: state.bootcamps.bootcamp
+  bootcamps: state.bootcamps.bootcamps,
+  userBootcamp: getUserBootcampSelectors(state)
 });
 
-export default connect(mapStateToProps, { getCourses, getBootcampbyID })(
+export default connect(mapStateToProps, { getBootcampbyID, getBootcamps })(
   ManageCourses
 );

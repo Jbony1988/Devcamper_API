@@ -43,6 +43,7 @@ const Bootcamp = ({
               {/* <!-- Main col --> */}
               <div className="col-md-8">
                 <h1>{name}</h1>
+
                 {/* <!-- Description --> */}
                 <p>{description}</p>
                 {/* <!-- Avg cost --> */}

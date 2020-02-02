@@ -29,9 +29,9 @@ const SideBar = ({
       {/* <a href="reviews.html" >
 
       </a> */}
-      <a href="add-review.html" className="btn btn-light btn-block my-3">
+      <Link to={`/add-review/${_id}`} className="btn btn-light btn-block my-3">
         <i className="fas fa-pencil-alt"></i> Write a Review
-      </a>
+      </Link>
       <a
         href={`${website}`}
         target="_blank"
